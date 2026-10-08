@@ -10,35 +10,122 @@
     {
       "nombre": "Desayunos",
       "platos": [
-        { "id": "avo-toast", "nombre": "Avo toast", "descripcion": "Pan artesanal tostado, aguacate fresco, tomate y huevo al gusto.", "precio": null, "media": [] },
-        { "id": "panqueques", "nombre": "Panqueques", "descripcion": "Suaves y proteicos. Servidos con fruta de temporada y miel.", "precio": null, "media": [] },
-        { "id": "waffles", "nombre": "Waffles", "descripcion": "Waffle de harina de avena y plátano acompañado de fruta de temporada.", "precio": null, "media": [] },
-        { "id": "desayuno-sabora", "nombre": "Desayuno Sabora", "descripcion": "Huevos al gusto, tocino, pan artesanal tostado, mantequilla y frutas frescas.", "precio": null, "destacado": true, "media": [] },
-        { "id": "tostadas-francesas", "nombre": "Tostadas Francesas", "descripcion": "Pan dorado con frutas frescas, miel y canela.", "precio": null, "media": [] }
+        {
+          "id": "avo-toast",
+          "nombre": "Avo toast",
+          "descripcion": "Pan artesanal tostado, aguacate fresco, tomate y huevo al gusto.",
+          "precio": 100,
+          "media": []
+        },
+        {
+          "id": "panqueques",
+          "nombre": "Panqueques",
+          "descripcion": "Suaves y proteicos. Servidos con fruta de temporada y miel.",
+          "precio": null,
+          "media": []
+        },
+        {
+          "id": "waffles",
+          "nombre": "Waffles",
+          "descripcion": "Waffle de harina de avena y plátano acompañado de fruta de temporada.",
+          "precio": null,
+          "media": []
+        },
+        {
+          "id": "desayuno-sabora",
+          "nombre": "Desayuno Sabora",
+          "descripcion": "Huevos al gusto, tocino, pan artesanal tostado, mantequilla y frutas frescas.",
+          "precio": null,
+          "destacado": true,
+          "media": []
+        },
+        {
+          "id": "tostadas-francesas",
+          "nombre": "Tostadas Francesas",
+          "descripcion": "Pan dorado con frutas frescas, miel y canela.",
+          "precio": null,
+          "media": []
+        }
       ]
     },
     {
       "nombre": "Brunch & Sándwiches",
       "platos": [
-        { "id": "crispy-chicken-sandwich", "nombre": "Crispy chicken sandwich", "descripcion": "Pollo crujiente, pan brioche, pepinillos y salsa especial.", "precio": null, "media": [] },
-        { "id": "club-sandwich-sabora", "nombre": "Club Sándwich SABORA", "descripcion": "Pollo a la plancha, jamón, tocino, queso cheddar, lechuga, tomate y salsa de la casa.", "precio": null, "media": [] },
-        { "id": "sabora-smash-burger", "nombre": "Sabora smash burger", "descripcion": "Doble smash de res a la plancha, queso fundido, salsa especial, en pan brioche dorado.", "precio": null, "destacado": true, "media": [] },
-        { "id": "chicken-pesto-panini", "nombre": "Chicken Pesto Panini", "descripcion": "Pechuga de pollo marinada, mozzarella fresca, pesto de albahaca, tomate y pan ciabatta tostado.", "precio": null, "media": [] }
+        {
+          "id": "crispy-chicken-sandwich",
+          "nombre": "Crispy chicken sandwich",
+          "descripcion": "Pollo crujiente, pan brioche, pepinillos y salsa especial.",
+          "precio": null,
+          "media": []
+        },
+        {
+          "id": "club-sandwich-sabora",
+          "nombre": "Club Sándwich SABORA",
+          "descripcion": "Pollo a la plancha, jamón, tocino, queso cheddar, lechuga, tomate y salsa de la casa.",
+          "precio": null,
+          "media": []
+        },
+        {
+          "id": "sabora-smash-burger",
+          "nombre": "Sabora smash burger",
+          "descripcion": "Doble smash de res a la plancha, queso fundido, salsa especial, en pan brioche dorado.",
+          "precio": null,
+          "destacado": true,
+          "media": []
+        },
+        {
+          "id": "chicken-pesto-panini",
+          "nombre": "Chicken Pesto Panini",
+          "descripcion": "Pechuga de pollo marinada, mozzarella fresca, pesto de albahaca, tomate y pan ciabatta tostado.",
+          "precio": null,
+          "media": []
+        }
       ]
     },
     {
       "nombre": "Platos fuertes",
       "platos": [
-        { "id": "steak-sabora", "nombre": "Steak SABORA", "descripcion": "Jugoso corte de res a la parrilla, acompañado de puré de papa cremoso, vegetales salteados y salsa de la casa.", "precio": null, "destacado": true, "media": [] },
-        { "id": "chicken-mushroom", "nombre": "Chicken & Mushroom", "descripcion": "Pechuga de pollo a la parrilla, bañada en una cremosa salsa de hongos, acompañada de puré de papa artesanal y vegetales salteados.", "precio": null, "media": [] },
-        { "id": "fetuccini-alfredo", "nombre": "Fetuccini Alfredo con pollo", "descripcion": "Pasta fetuccini con salsa Alfredo, pechuga de pollo y queso parmesano. Acompañado de pan con ajo.", "precio": null, "media": [] }
+        {
+          "id": "steak-sabora",
+          "nombre": "Steak SABORA",
+          "descripcion": "Jugoso corte de res a la parrilla, acompañado de puré de papa cremoso, vegetales salteados y salsa de la casa.",
+          "precio": null,
+          "destacado": true,
+          "media": []
+        },
+        {
+          "id": "chicken-mushroom",
+          "nombre": "Chicken & Mushroom",
+          "descripcion": "Pechuga de pollo a la parrilla, bañada en una cremosa salsa de hongos, acompañada de puré de papa artesanal y vegetales salteados.",
+          "precio": null,
+          "media": []
+        },
+        {
+          "id": "fetuccini-alfredo",
+          "nombre": "Fetuccini Alfredo con pollo",
+          "descripcion": "Pasta fetuccini con salsa Alfredo, pechuga de pollo y queso parmesano. Acompañado de pan con ajo.",
+          "precio": null,
+          "media": []
+        }
       ]
     },
     {
       "nombre": "Para compartir",
       "platos": [
-        { "id": "crispy-boneless", "nombre": "Crispy Boneless", "descripcion": "Trozos de pollo crujiente acompañados de papas fritas y salsa a elección.", "precio": null, "media": [] },
-        { "id": "mozzarella-sticks", "nombre": "Mozzarella Sticks", "descripcion": "Palitos de mozzarella empanizados.", "precio": null, "media": [] }
+        {
+          "id": "crispy-boneless",
+          "nombre": "Crispy Boneless",
+          "descripcion": "Trozos de pollo crujiente acompañados de papas fritas y salsa a elección.",
+          "precio": null,
+          "media": []
+        },
+        {
+          "id": "mozzarella-sticks",
+          "nombre": "Mozzarella Sticks",
+          "descripcion": "Palitos de mozzarella empanizados.",
+          "precio": null,
+          "media": []
+        }
       ]
     }
   ]
