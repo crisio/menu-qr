@@ -21,7 +21,7 @@
           "id": "panqueques",
           "nombre": "Panqueques",
           "descripcion": "Suaves y proteicos. Servidos con fruta de temporada y miel.",
-          "precio": null,
+          "precio": 80,
           "media": []
         },
         {
