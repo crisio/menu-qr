@@ -22,7 +22,13 @@
           "nombre": "Panqueques",
           "descripcion": "Suaves y proteicos. Servidos con fruta de temporada y miel.",
           "precio": 80,
-          "media": []
+          "media": [
+            {
+              "tipo": "foto",
+              "src": "media/panqueques-mv04tv17ar8.webp",
+              "thumb": "media/panqueques-mv04tv17ar8-t.webp"
+            }
+          ]
         },
         {
           "id": "waffles",
