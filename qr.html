@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Generar QR del menú</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <style>
+    body { font-family: system-ui, sans-serif; text-align: center; padding: 2rem 1rem; color: #2b2118; background: #fff; }
+    input { width: 100%; max-width: 420px; padding: .6rem; font-size: 1rem; }
+    #qr { display: inline-block; margin: 1.5rem 0 .5rem; padding: 1rem; background: #fff; }
+    #qr img, #qr canvas { margin: 0 auto; }
+    .titulo { font-size: 1.5rem; font-weight: 700; margin: .5rem 0 0; }
+    button { margin: .5rem; padding: .6rem 1.2rem; font-size: 1rem; cursor: pointer; }
+    @media print { .no-print { display: none; } }
+  </style>
+</head>
+<body>
+  <div class="no-print">
+    <h1>QR del menú</h1>
+    <p>URL del menú:</p>
+    <input id="url">
+  </div>
+
+  <div id="qr"></div>
+  <p class="titulo">Escanea para ver el menú</p>
+
+  <div class="no-print">
+    <button onclick="window.print()">Imprimir</button>
+    <button id="descargar">Descargar PNG</button>
+  </div>
+
+  <script>
+    const input = document.getElementById("url");
+    const qrEl = document.getElementById("qr");
+    input.value = location.href.replace(/qr\.html.*$/, "");
+
+    const qr = new QRCode(qrEl, { width: 280, height: 280, correctLevel: QRCode.CorrectLevel.H });
+    const generar = () => qr.makeCode(input.value.trim() || " ");
+    input.addEventListener("input", generar);
+    generar();
+
+    document.getElementById("descargar").onclick = () => {
+      const canvas = qrEl.querySelector("canvas");
+      const a = document.createElement("a");
+      a.download = "menu-qr.png";
+      a.href = canvas.toDataURL("image/png");
+      a.click();
+    };
+  </script>
+</body>
+</html>

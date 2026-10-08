@@ -1,0 +1,40 @@
+{
+  "restaurante": "Mi Restaurante",
+  "eslogan": "Comida casera hecha con cariño",
+  "moneda": "L",
+  "telefono": "+504 0000-0000",
+  "direccion": "Calle Principal, Ciudad",
+  "horario": "Lun–Dom · 11:00 – 22:00",
+  "categorias": [
+    {
+      "nombre": "Entradas",
+      "platos": [
+        { "nombre": "Nachos con queso", "descripcion": "Totopos, queso fundido, frijoles y pico de gallo", "precio": 120 },
+        { "nombre": "Alitas BBQ", "descripcion": "8 piezas con salsa de la casa", "precio": 180, "destacado": true }
+      ]
+    },
+    {
+      "nombre": "Platos fuertes",
+      "platos": [
+        { "nombre": "Plato típico", "descripcion": "Carne asada, frijoles, plátano, queso, aguacate y tortillas", "precio": 250, "destacado": true },
+        { "nombre": "Pollo a la plancha", "descripcion": "Con arroz, ensalada y papas", "precio": 210 },
+        { "nombre": "Hamburguesa clásica", "descripcion": "Carne de res, queso cheddar, lechuga, tomate y papas", "precio": 195 }
+      ]
+    },
+    {
+      "nombre": "Bebidas",
+      "platos": [
+        { "nombre": "Refresco natural", "descripcion": "Horchata, tamarindo o maracuyá", "precio": 45 },
+        { "nombre": "Café", "precio": 35 },
+        { "nombre": "Agua", "precio": 25, "disponible": false }
+      ]
+    },
+    {
+      "nombre": "Postres",
+      "platos": [
+        { "nombre": "Tres leches", "precio": 80 },
+        { "nombre": "Flan de caramelo", "precio": 70 }
+      ]
+    }
+  ]
+}

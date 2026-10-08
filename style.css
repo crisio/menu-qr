@@ -1,0 +1,102 @@
+:root {
+  --bg: #faf7f2;
+  --card: #ffffff;
+  --text: #2b2118;
+  --muted: #7a6a5c;
+  --accent: #c2410c;
+  --line: #ece4d9;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #1a1612;
+    --card: #241f1a;
+    --text: #f3ece4;
+    --muted: #b3a595;
+    --accent: #fb923c;
+    --line: #3a322a;
+  }
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.4;
+}
+
+.hero {
+  text-align: center;
+  padding: 2.5rem 1rem 1.5rem;
+}
+.hero h1 { margin: 0; font-size: 2rem; }
+.hero p { margin: .4rem 0 0; color: var(--muted); }
+
+.tabs {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  display: flex;
+  gap: .5rem;
+  overflow-x: auto;
+  padding: .75rem 1rem;
+  background: var(--bg);
+  border-bottom: 1px solid var(--line);
+}
+.tabs a {
+  flex: none;
+  padding: .4rem .9rem;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  color: var(--text);
+  text-decoration: none;
+  font-size: .9rem;
+  background: var(--card);
+}
+.tabs a:active { border-color: var(--accent); color: var(--accent); }
+
+.menu { max-width: 640px; margin: 0 auto; padding: 0 1rem 2rem; }
+
+section { scroll-margin-top: 4rem; }
+section h2 {
+  margin: 2rem 0 .75rem;
+  font-size: 1.25rem;
+  color: var(--accent);
+}
+
+.plato {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: .9rem 1rem;
+  margin-bottom: .5rem;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+}
+.plato h3 { margin: 0; font-size: 1rem; }
+.plato p { margin: .25rem 0 0; font-size: .875rem; color: var(--muted); }
+.precio { font-weight: 700; white-space: nowrap; }
+.agotado { opacity: .5; }
+.agotado .precio { font-weight: 400; font-size: .875rem; }
+
+.badge {
+  font-size: .7rem;
+  font-weight: 600;
+  color: var(--accent);
+  white-space: nowrap;
+}
+
+.cargando { text-align: center; color: var(--muted); padding: 2rem 0; }
+
+.info {
+  text-align: center;
+  color: var(--muted);
+  font-size: .875rem;
+  padding: 1.5rem 1rem 2.5rem;
+  border-top: 1px solid var(--line);
+}
+.info p { margin: .2rem 0; }
