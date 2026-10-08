@@ -31,7 +31,10 @@ button,.btn{display:inline-flex;align-items:center;justify-content:center;gap:6p
 button:active{transform:scale(.97)}
 button:disabled{opacity:.5}
 .pri{background:var(--green);border-color:var(--green);color:#fff;font-weight:600}
-.bar .pri{background:#fff;color:var(--green);border-color:#fff}
+#guardarTop{min-height:38px;padding:6px 14px;border:1px solid rgba(255,255,255,.6);background:transparent;color:#fff;font-weight:600;white-space:nowrap}
+#guardarTop.sucio{background:#f6c445;border-color:#f6c445;color:#1e1e1b;box-shadow:0 0 0 3px rgba(246,196,69,.35)}
+#guardarTop.ok{background:#fff;border-color:#fff;color:var(--green)}
+#guardarTop[hidden]{display:none}
 .del{color:var(--red)}
 .ico{min-width:42px;padding:8px}
 .add{width:100%;margin-top:10px;border-style:dashed;color:var(--green);font-weight:600}
@@ -68,7 +71,7 @@ code{background:#f0ece6;padding:1px 5px;border-radius:5px}
 </style>
 </head>
 <body>
-<header class="bar"><strong>Editar menú</strong><a href="./" target="_blank" rel="noopener">Ver menú ↗</a></header>
+<header class="bar"><strong>Editar menú</strong><a href="./" target="_blank" rel="noopener">Ver menú ↗</a><button id="guardarTop" hidden>✓ Guardado</button></header>
 <div id="estado" role="status"></div>
 <main id="app"></main>
 <button class="pri save-fab" id="guardar" hidden>Guardar cambios</button>
@@ -93,7 +96,8 @@ var abiertos = new Set();   // ids de platos desplegados
 var dirty = false, guardando = false;
 
 var $ = function(s){ return document.querySelector(s); };
-var app = $("#app"), btnGuardar = $("#guardar"), fileInput = $("#file");
+var app = $("#app"), btnGuardar = $("#guardar"), btnTop = $("#guardarTop"), fileInput = $("#file");
+var version = 0, revisarTimer = null;
 
 function store(op, v){
   try {
@@ -128,7 +132,20 @@ function estado(msg, tipo){
   e.style.display = msg ? "block" : "none";
 }
 
-function marcar(){ dirty = true; btnGuardar.hidden = false; }
+function marcar(){ dirty = true; version++; clearTimeout(revisarTimer); botones(); }
+
+// Estado de los botones de guardar: "sucio" (hay cambios), "guardando" o guardado
+function botones(){
+  btnTop.hidden = !menu;
+  btnGuardar.hidden = !dirty;
+  btnTop.disabled = btnGuardar.disabled = guardando;
+  if (guardando) { btnTop.className = ""; btnTop.textContent = btnGuardar.textContent = "Guardando…"; }
+  else if (dirty) { btnTop.className = "sucio"; btnTop.textContent = "Guardar cambios"; btnGuardar.textContent = "Guardar cambios"; }
+  else { btnTop.className = "ok"; btnTop.textContent = "✓ Guardado"; }
+}
+addEventListener("keydown", function(e){ // Ctrl+S / Cmd+S en computadora
+  if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "s") { e.preventDefault(); if (dirty) guardar(); }
+});
 addEventListener("beforeunload", function(e){ if (dirty) { e.preventDefault(); e.returnValue = ""; } });
 
 // ===== GitHub API =====
@@ -159,11 +176,11 @@ function blobToBase64(blob){
 
 // ===== Inicio / login =====
 function vistaLogin(error){
-  btnGuardar.hidden = true;
+  menu = null; dirty = false; botones();
   var inp = h("input", { type: "password", placeholder: "github_pat_…", autocomplete: "off", autocapitalize: "off", spellcheck: "false" });
   app.replaceChildren(h("section", { class: "card" },
     h("h2", {}, "Entrar"),
-    h("p", { class: "muted" }, "Pega tu token de GitHub. Solo se guarda en este teléfono."),
+    h("p", { class: "muted" }, "Pega tu token de GitHub. Solo se guarda en este dispositivo."),
     error ? h("p", { style: "color:var(--red)" }, error) : null,
     inp,
     h("button", { class: "pri add", style: "border-style:solid;color:#fff", onclick: function(){
@@ -194,6 +211,7 @@ function cargar(){
     menu.categorias = menu.categorias || [];
     committed = new Set(rutasMedia());
     estado("");
+    botones();
     render();
   }).catch(function(e){
     console.error(e);
@@ -227,7 +245,7 @@ function render(){
     }}, "+ Agregar categoría"),
     h("p", { class: "muted", style: "text-align:center;margin-top:24px" },
       "Repo: " + OWNER + "/" + REPO + " · ",
-      h("a", { href: "#", onclick: function(e){ e.preventDefault(); if (confirm("¿Cerrar sesión en este teléfono?")) { store("del"); token = ""; vistaLogin(); } } }, "Cerrar sesión"))
+      h("a", { href: "#", onclick: function(e){ e.preventDefault(); if (confirm("¿Cerrar sesión en este dispositivo?")) { store("del"); token = ""; vistaLogin(); } } }, "Cerrar sesión"))
   );
   scrollTo(0, scroll);
 }
@@ -463,9 +481,13 @@ function agregarVideo(p, file){
 }
 
 // ===== Guardar (un solo commit en GitHub) =====
-btnGuardar.addEventListener("click", function(){
-  if (guardando) return;
-  guardando = true; btnGuardar.disabled = true;
+btnGuardar.addEventListener("click", guardar);
+btnTop.addEventListener("click", function(){ if (dirty) guardar(); });
+
+function guardar(){
+  if (guardando || !dirty) return;
+  guardando = true; botones();
+  var v = version, json = JSON.stringify(menu, null, 2) + "\n";
   var usadas = new Set(rutasMedia());
   var subir = [].concat(Array.from(pend.keys()).filter(function(k){ return usadas.has(k); }));
   var borrar = Array.from(committed).filter(function(k){ return !usadas.has(k) && k.indexOf("media/") === 0; });
@@ -488,7 +510,7 @@ btnGuardar.addEventListener("click", function(){
     }, Promise.resolve());
   }).then(function(){
     estado("Guardando menú…");
-    tree.push({ path: "menu.json", mode: "100644", type: "blob", content: JSON.stringify(menu, null, 2) + "\n" });
+    tree.push({ path: "menu.json", mode: "100644", type: "blob", content: json });
     var conBorrados = tree.concat(borrar.map(function(path){ return { path: path, mode: "100644", type: "blob", sha: null }; }));
     return gh("git/trees", { method: "POST", body: { base_tree: baseTree, tree: conBorrados } })
       .catch(function(){ return gh("git/trees", { method: "POST", body: { base_tree: baseTree, tree: tree } }); });
@@ -497,16 +519,35 @@ btnGuardar.addEventListener("click", function(){
   }).then(function(c){
     return gh("git/refs/heads/" + BRANCH, { method: "PATCH", body: { sha: c.sha } });
   }).then(function(){
-    pend.clear();
+    subir.forEach(function(k){ pend.delete(k); });
     committed = usadas;
-    dirty = false; btnGuardar.hidden = true;
-    estado("✅ Guardado. El menú público se actualiza en 1–2 minutos.", "ok");
-    setTimeout(function(){ if (!dirty) estado(""); }, 8000);
+    if (version === v) dirty = false; // si editaste mientras guardaba, sigue pendiente
+    estado("✅ Cambios guardados. Publicando en el menú (1–2 minutos)…", "ok");
+    revisarPublicado(json, 0);
   }).catch(function(e){
     console.error(e);
     estado("❌ No se pudo guardar: " + e.message + ". Revisa tu conexión e intenta de nuevo.", "err");
-  }).then(function(){ guardando = false; btnGuardar.disabled = false; });
-});
+  }).then(function(){ guardando = false; botones(); });
+}
+
+// Revisa el menú público hasta que muestre lo que se acaba de guardar
+function revisarPublicado(json, intento){
+  clearTimeout(revisarTimer);
+  if (dirty) return;
+  revisarTimer = setTimeout(function(){
+    fetch("menu.json?t=" + Date.now(), { cache: "no-store" }).then(function(r){ return r.ok ? r.text() : ""; }).catch(function(){ return ""; })
+      .then(function(txt){
+        if (dirty) return;
+        var listo = false;
+        try { listo = txt && JSON.stringify(JSON.parse(txt)) === JSON.stringify(JSON.parse(json)); } catch (e) {}
+        if (listo) {
+          estado("✅ Publicado: los cambios ya se ven en el menú.", "ok");
+          revisarTimer = setTimeout(function(){ if (!dirty) estado(""); }, 10000);
+        } else if (intento < 24) revisarPublicado(json, intento + 1);
+        else estado("✅ Cambios guardados. Si aún no los ves en el menú, recarga la página en un momento.", "ok");
+      });
+  }, 10000);
+}
 
 if (token) cargar(); else vistaLogin();
 </script>
