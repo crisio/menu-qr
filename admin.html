@@ -6,7 +6,10 @@
 <meta name="robots" content="noindex">
 <meta name="theme-color" content="#2f5f35">
 <title>Editar menú</title>
-<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="icon" href="editor.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="editor-180.png">
+<link rel="manifest" href="editor.webmanifest">
+<meta name="apple-mobile-web-app-title" content="SABORA Editor">
 <style>
 :root{--bg:#f2efea;--card:#fff;--ink:#1e1e1b;--muted:#6b665f;--green:#2f5f35;--line:#ddd6cc;--red:#b42318}
 *{box-sizing:border-box}
@@ -34,7 +37,9 @@ button:disabled{opacity:.5}
 #guardarTop{min-height:38px;padding:6px 14px;border:1px solid rgba(255,255,255,.6);background:transparent;color:#fff;font-weight:600;white-space:nowrap}
 #guardarTop.sucio{background:#f6c445;border-color:#f6c445;color:#1e1e1b;box-shadow:0 0 0 3px rgba(246,196,69,.35)}
 #guardarTop.ok{background:#fff;border-color:#fff;color:var(--green)}
-#guardarTop[hidden]{display:none}
+#guardarTop[hidden],#instalar[hidden]{display:none}
+#instalar{min-height:38px;padding:6px 12px;border:1px solid rgba(255,255,255,.6);background:transparent;color:#fff;font-size:14px;white-space:nowrap}
+@media (max-width:480px){.bar{flex-wrap:wrap}.bar strong{flex-basis:100%}}
 .del{color:var(--red)}
 .ico{min-width:42px;padding:8px}
 .add{width:100%;margin-top:10px;border-style:dashed;color:var(--green);font-weight:600}
@@ -71,7 +76,7 @@ code{background:#f0ece6;padding:1px 5px;border-radius:5px}
 </style>
 </head>
 <body>
-<header class="bar"><strong>Editar menú</strong><a href="./" target="_blank" rel="noopener">Ver menú ↗</a><button id="guardarTop" hidden>✓ Guardado</button></header>
+<header class="bar"><strong>Editar menú</strong><a href="./" target="_blank" rel="noopener">Ver menú ↗</a><button id="instalar" hidden title="Instalar como app en este dispositivo">⬇ Instalar app</button><button id="guardarTop" hidden>✓ Guardado</button></header>
 <div id="estado" role="status"></div>
 <main id="app"></main>
 <button class="pri save-fab" id="guardar" hidden>Guardar cambios</button>
@@ -548,6 +553,17 @@ function revisarPublicado(json, intento){
       });
   }, 10000);
 }
+
+// ===== App instalable (PWA) =====
+if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(function(){});
+var instalarEvt = null, btnInstalar = $("#instalar");
+addEventListener("beforeinstallprompt", function(e){ e.preventDefault(); instalarEvt = e; btnInstalar.hidden = false; });
+btnInstalar.addEventListener("click", function(){
+  if (!instalarEvt) return;
+  instalarEvt.prompt();
+  instalarEvt.userChoice.then(function(){ instalarEvt = null; btnInstalar.hidden = true; });
+});
+addEventListener("appinstalled", function(){ btnInstalar.hidden = true; estado("✅ App instalada. Ya la tienes en tu escritorio / menú Inicio.", "ok"); });
 
 if (token) cargar(); else vistaLogin();
 </script>

@@ -25,6 +25,14 @@ Menú digital de **SABORA · Brunch & Coffee**, accesible por código QR.
 4. Usa **📷 Agregar foto** / **🎬 Agregar video**. Las flechas ◀ ▶ cambian el orden y la primera foto es la que se ve en la lista.
 5. Toca **Guardar cambios**. El menú público se actualiza en 1–2 minutos.
 
+### Instalar el editor como app (Windows, Android, iPhone)
+
+- **Windows (Edge o Chrome):** abre `admin.html` y toca **⬇ Instalar app** en la barra verde (o el ícono de instalar en la barra de direcciones). Queda con su ícono en el escritorio y en el menú Inicio.
+- **Android (Chrome):** menú ⋮ → **Instalar app**.
+- **iPhone (Safari):** botón Compartir → **Agregar a inicio**.
+
+El menú público (`index.html`) también se puede instalar de la misma forma, con su propio ícono.
+
 ### Videos
 
 - Clips cortos (10–20 s), máximo 40 MB.

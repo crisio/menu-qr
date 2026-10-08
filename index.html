@@ -229,6 +229,7 @@ sheet.addEventListener("close",function(){
 });
 // Botón "atrás" de Android / gesto de iPhone cierra la ficha
 addEventListener("popstate",function(){if(sheet.open)sheet.close()});
+if("serviceWorker"in navigator)addEventListener("load",function(){navigator.serviceWorker.register("sw.js").catch(function(){})});
 })();
 </script>
 </body>

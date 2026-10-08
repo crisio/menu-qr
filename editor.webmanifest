@@ -1,0 +1,20 @@
+{
+  "id": "./admin.html",
+  "name": "SABORA · Editor del menú",
+  "short_name": "SABORA Editor",
+  "description": "Edita platos, precios, fotos y videos del menú de SABORA",
+  "lang": "es",
+  "start_url": "./admin.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f2efea",
+  "theme_color": "#2f5f35",
+  "icons": [
+    { "src": "editor-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "editor-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "editor-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Ver menú", "url": "./", "icons": [{ "src": "icon-192.png", "sizes": "192x192" }] }
+  ]
+}

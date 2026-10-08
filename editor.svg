@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-  <rect width="512" height="512" rx="108" fill="#ebe7e1"/>
+  <rect width="512" height="512" rx="108" fill="#2f5f35"/>
   <g transform="translate(0 0) scale(1)">
-    <g transform="translate(292 36) scale(1.02)" opacity=".95"><g fill="none" stroke="#2f5f35" stroke-width="4.2" stroke-linecap="round">
+    <g transform="translate(292 36) scale(1.02)" opacity=".95"><g fill="none" stroke="#cfe0c8" stroke-width="4.2" stroke-linecap="round">
   <defs><g id="lf"><path d="M0 0C12-9 34-9 46 0C34 9 12 9 0 0Z"/><path d="M3 0H40" stroke-width="2"/></g></defs>
   <path d="M206 14C160 40 120 72 86 118C68 142 56 166 50 196"/>
   <use href="#lf" transform="translate(182 27) rotate(-28)"/><use href="#lf" transform="translate(170 33) rotate(128)"/>
@@ -9,7 +9,7 @@
   <use href="#lf" transform="translate(114 76) rotate(4)"/><use href="#lf" transform="translate(101 92) rotate(166)"/>
   <path d="M124 66C122 76 118 84 112 90" stroke-width="2.4"/>
   <ellipse cx="108" cy="99" rx="10" ry="12" transform="rotate(-25 108 99)"/></g></g>
-    <text x="236" y="392" text-anchor="middle" font-family="FreeSerif" font-style="italic" font-size="400" fill="#2f5f35">S</text>
-    <text x="256" y="462" text-anchor="middle" font-family="FreeSerif" font-size="46" letter-spacing="14" fill="#2f5f35">SABORA</text>
-    
+    <text x="236" y="392" text-anchor="middle" font-family="FreeSerif" font-style="italic" font-size="400" fill="#f6f3ef">S</text>
+    <text x="256" y="462" text-anchor="middle" font-family="FreeSerif" font-size="46" letter-spacing="14" fill="#f6f3ef">SABORA</text>
+    <g transform="translate(372 352)"><circle r="62" fill="#f6f3ef"/><g transform="rotate(45)" fill="#2f5f35"><rect x="-11" y="-38" width="22" height="58" rx="3"/><path d="M-11 24H11L0 44Z"/></g></g>
   </g></svg>
