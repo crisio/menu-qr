@@ -1,0 +1,514 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#2f5f35">
+<title>Editar menú</title>
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<style>
+:root{--bg:#f2efea;--card:#fff;--ink:#1e1e1b;--muted:#6b665f;--green:#2f5f35;--line:#ddd6cc;--red:#b42318}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.4 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-tap-highlight-color:transparent}
+.bar{position:sticky;top:0;z-index:10;display:flex;align-items:center;gap:10px;padding:10px 14px;padding-top:calc(10px + env(safe-area-inset-top));
+  background:var(--green);color:#fff}
+.bar strong{flex:1;font-size:17px}
+.bar a{color:#fff;font-size:14px}
+#estado{position:sticky;top:calc(56px + env(safe-area-inset-top));z-index:9;display:none;padding:10px 14px;background:#fff7d6;font-size:14px;border-bottom:1px solid var(--line)}
+#estado.ok{background:#e3f4e1}#estado.err{background:#fde8e6;color:var(--red)}
+main{max-width:720px;margin:0 auto;padding:14px 12px calc(100px + env(safe-area-inset-bottom))}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:14px}
+h2{margin:0 0 10px;font-size:18px}
+label{display:block;margin:10px 0 4px;color:var(--muted);font-size:13px;font-weight:600}
+input[type=text],input[type=password],textarea,select{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:10px;background:#fff;color:var(--ink);font:inherit;font-size:16px}
+textarea{resize:vertical;min-height:72px}
+input:focus,textarea:focus,select:focus{outline:2px solid var(--green);outline-offset:-1px;border-color:transparent}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:0 10px}
+button,.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:42px;padding:8px 14px;border:1px solid var(--line);border-radius:10px;
+  background:#fff;color:var(--ink);font:inherit;font-size:15px;cursor:pointer;touch-action:manipulation;text-decoration:none}
+button:active{transform:scale(.97)}
+button:disabled{opacity:.5}
+.pri{background:var(--green);border-color:var(--green);color:#fff;font-weight:600}
+.bar .pri{background:#fff;color:var(--green);border-color:#fff}
+.del{color:var(--red)}
+.ico{min-width:42px;padding:8px}
+.add{width:100%;margin-top:10px;border-style:dashed;color:var(--green);font-weight:600}
+.cat-h{display:flex;gap:6px;align-items:center}
+.cat-h input{flex:1;font-weight:700;color:var(--green)}
+details.prod{border:1px solid var(--line);border-radius:12px;margin-top:10px;background:#fcfbf9}
+details.prod[open]{background:#fff;box-shadow:0 2px 10px rgba(0,0,0,.06)}
+summary{display:flex;align-items:center;gap:10px;padding:10px 12px;list-style:none;cursor:pointer}
+summary::-webkit-details-marker{display:none}
+summary .n{flex:1;min-width:0;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+summary .p{color:var(--muted);font-size:14px;white-space:nowrap}
+summary .p.falta{color:#b54708}
+summary::after{content:"›";color:var(--muted);font-size:22px;line-height:1;transition:transform .2s}
+details[open] summary::after{transform:rotate(90deg)}
+.mini{flex:none;width:40px;height:40px;border-radius:8px;object-fit:cover;background:#e8e2d9}
+.pb{padding:0 12px 14px}
+.checks{display:flex;gap:18px;margin:14px 0 4px}
+.checks label{display:flex;align-items:center;gap:8px;margin:0;color:var(--ink);font-size:15px;font-weight:500}
+.checks input{width:22px;height:22px;accent-color:var(--green)}
+.media{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:8px;margin-top:6px}
+.tile{position:relative;aspect-ratio:1/1;border-radius:10px;overflow:hidden;background:#222}
+.tile img,.tile video{width:100%;height:100%;object-fit:cover;display:block}
+.tile .tag{position:absolute;left:5px;top:5px;padding:1px 6px;border-radius:6px;background:rgba(0,0,0,.6);color:#fff;font-size:11px}
+.tile .acts{position:absolute;inset:auto 0 0 0;display:flex;justify-content:space-between;padding:4px;background:linear-gradient(transparent,rgba(0,0,0,.65))}
+.tile .acts button{min-height:30px;min-width:30px;padding:0;border:0;border-radius:8px;background:rgba(255,255,255,.9);font-size:14px}
+.row{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.row>*{flex:1 1 auto}
+.muted{color:var(--muted);font-size:14px}
+.save-fab{position:fixed;left:12px;right:12px;bottom:calc(12px + env(safe-area-inset-bottom));z-index:10;max-width:696px;margin:0 auto;min-height:52px;
+  border-radius:14px;font-size:17px;box-shadow:0 6px 20px rgba(0,0,0,.2)}
+.save-fab[hidden]{display:none}
+ol{padding-left:20px}ol li{margin:6px 0}
+code{background:#f0ece6;padding:1px 5px;border-radius:5px}
+</style>
+</head>
+<body>
+<header class="bar"><strong>Editar menú</strong><a href="./" target="_blank" rel="noopener">Ver menú ↗</a></header>
+<div id="estado" role="status"></div>
+<main id="app"></main>
+<button class="pri save-fab" id="guardar" hidden>Guardar cambios</button>
+<input type="file" id="file" hidden>
+
+<script>
+// ===== Configuración =====
+var OWNER = "crisio", REPO = "menu-qr", BRANCH = "main";
+(function(){ // Si está publicado en usuario.github.io/repo, lo detecta solo
+  var m = location.hostname.match(/^([^.]+)\.github\.io$/i);
+  if (m) { OWNER = m[1]; var seg = location.pathname.split("/").filter(Boolean)[0]; if (seg && !/\.html$/.test(seg)) REPO = seg; }
+})();
+var MAX_VIDEO_MB = 40;
+
+// ===== Estado =====
+var token = store("get") || "";
+var menu = null;            // contenido de menu.json
+var pend = new Map();       // ruta -> Blob por subir
+var previews = new Map();   // ruta -> objectURL (para ver fotos recién subidas)
+var committed = new Set();  // archivos de media/ que ya están en el repo
+var abiertos = new Set();   // ids de platos desplegados
+var dirty = false, guardando = false;
+
+var $ = function(s){ return document.querySelector(s); };
+var app = $("#app"), btnGuardar = $("#guardar"), fileInput = $("#file");
+
+function store(op, v){
+  try {
+    if (op === "get") return localStorage.getItem("menuqr-token");
+    if (op === "set") localStorage.setItem("menuqr-token", v);
+    if (op === "del") localStorage.removeItem("menuqr-token");
+  } catch (e) {}
+}
+
+function h(tag, props){
+  var el = document.createElement(tag);
+  for (var k in props || {}) {
+    var v = props[k];
+    if (v == null || v === false) continue;
+    if (k.slice(0, 2) === "on") el.addEventListener(k.slice(2), v);
+    else if (k === "class") el.className = v;
+    else if (k === "value" || k === "checked" || k === "open" || k === "disabled" || k === "hidden") el[k] = v;
+    else el.setAttribute(k, v === true ? "" : v);
+  }
+  for (var i = 2; i < arguments.length; i++) {
+    [].concat(arguments[i]).forEach(function(c){
+      if (c != null && c !== false) el.append(c instanceof Node ? c : String(c));
+    });
+  }
+  return el;
+}
+
+function estado(msg, tipo){
+  var e = $("#estado");
+  e.textContent = msg || "";
+  e.className = tipo || "";
+  e.style.display = msg ? "block" : "none";
+}
+
+function marcar(){ dirty = true; btnGuardar.hidden = false; }
+addEventListener("beforeunload", function(e){ if (dirty) { e.preventDefault(); e.returnValue = ""; } });
+
+// ===== GitHub API =====
+function gh(path, opts){
+  opts = opts || {};
+  var url = "https://api.github.com/repos/" + OWNER + "/" + REPO + (path ? "/" + path : "");
+  var headers = {
+    Authorization: "Bearer " + token,
+    Accept: opts.raw ? "application/vnd.github.raw+json" : "application/vnd.github+json",
+    "X-GitHub-Api-Version": "2022-11-28"
+  };
+  if (opts.body) headers["Content-Type"] = "application/json";
+  return fetch(url, { method: opts.method || "GET", headers: headers, body: opts.body ? JSON.stringify(opts.body) : undefined, cache: "no-store" })
+    .then(function(r){
+      if (!r.ok) return r.text().then(function(t){ var e = new Error("GitHub " + r.status + ": " + t.slice(0, 200)); e.status = r.status; throw e; });
+      return opts.raw ? r.text() : r.json();
+    });
+}
+
+function blobToBase64(blob){
+  return new Promise(function(res, rej){
+    var fr = new FileReader();
+    fr.onload = function(){ res(String(fr.result).split(",")[1]); };
+    fr.onerror = rej;
+    fr.readAsDataURL(blob);
+  });
+}
+
+// ===== Inicio / login =====
+function vistaLogin(error){
+  btnGuardar.hidden = true;
+  var inp = h("input", { type: "password", placeholder: "github_pat_…", autocomplete: "off", autocapitalize: "off", spellcheck: "false" });
+  app.replaceChildren(h("section", { class: "card" },
+    h("h2", {}, "Entrar"),
+    h("p", { class: "muted" }, "Pega tu token de GitHub. Solo se guarda en este teléfono."),
+    error ? h("p", { style: "color:var(--red)" }, error) : null,
+    inp,
+    h("button", { class: "pri add", style: "border-style:solid;color:#fff", onclick: function(){
+      token = inp.value.trim(); if (!token) return;
+      store("set", token); cargar();
+    }}, "Entrar"),
+    h("details", { style: "margin-top:14px" },
+      h("summary", { style: "padding:0;color:var(--green);font-weight:600" }, "¿Cómo obtengo el token? (una sola vez)"),
+      h("ol", {},
+        h("li", {}, "Abre ", h("a", { href: "https://github.com/settings/personal-access-tokens/new", target: "_blank", rel: "noopener" }, "github.com/settings/personal-access-tokens/new"), " (con tu sesión de GitHub iniciada)."),
+        h("li", {}, "Token name: ", h("code", {}, "menu"), ". Expiration: la que prefieras (ej. 1 año)."),
+        h("li", {}, "Repository access: ", h("b", {}, "Only select repositories"), " → elige ", h("code", {}, REPO), "."),
+        h("li", {}, "Permissions → Repository permissions → ", h("b", {}, "Contents"), " → ", h("b", {}, "Read and write"), "."),
+        h("li", {}, "Toca ", h("b", {}, "Generate token"), ", cópialo y pégalo aquí.")
+      )
+    )
+  ));
+}
+
+function cargar(){
+  estado("Cargando menú…");
+  app.replaceChildren();
+  gh("").then(function(repo){
+    if (!repo.permissions || !repo.permissions.push) throw Object.assign(new Error("El token no tiene permiso de escritura."), { status: 403 });
+    return gh("contents/menu.json?ref=" + BRANCH, { raw: true });
+  }).then(function(txt){
+    menu = JSON.parse(txt);
+    menu.categorias = menu.categorias || [];
+    committed = new Set(rutasMedia());
+    estado("");
+    render();
+  }).catch(function(e){
+    console.error(e);
+    if (e.status === 401 || e.status === 403 || e.status === 404) {
+      store("del"); token = "";
+      vistaLogin(e.status === 401 ? "Token inválido o vencido." : "El token no tiene acceso al repo " + OWNER + "/" + REPO + " con permiso de escritura (Contents: Read and write).");
+      estado("");
+    } else {
+      estado("No se pudo cargar: " + e.message, "err");
+    }
+  });
+}
+
+function rutasMedia(){
+  var s = [];
+  menu.categorias.forEach(function(c){ (c.platos || []).forEach(function(p){ (p.media || []).forEach(function(m){
+    ["src", "thumb", "poster"].forEach(function(k){ if (m[k]) s.push(m[k]); });
+  }); }); });
+  return s;
+}
+
+// ===== Editor =====
+function render(){
+  var scroll = scrollY;
+  app.replaceChildren(
+    vistaInfo(),
+    ...menu.categorias.map(vistaCategoria),
+    h("button", { class: "add", onclick: function(){
+      var n = prompt("Nombre de la nueva categoría:"); if (!n) return;
+      menu.categorias.push({ nombre: n.trim(), platos: [] }); marcar(); render();
+    }}, "+ Agregar categoría"),
+    h("p", { class: "muted", style: "text-align:center;margin-top:24px" },
+      "Repo: " + OWNER + "/" + REPO + " · ",
+      h("a", { href: "#", onclick: function(e){ e.preventDefault(); if (confirm("¿Cerrar sesión en este teléfono?")) { store("del"); token = ""; vistaLogin(); } } }, "Cerrar sesión"))
+  );
+  scrollTo(0, scroll);
+}
+
+function campo(label, obj, key, opts){
+  opts = opts || {};
+  var tag = opts.area ? "textarea" : "input";
+  var el = h(tag, { type: opts.area ? null : "text", value: obj[key] == null ? "" : String(obj[key]), placeholder: opts.ph || "",
+    inputmode: opts.inputmode || null, rows: opts.area ? 3 : null,
+    oninput: function(){ obj[key] = opts.parse ? opts.parse(el.value) : el.value; marcar(); if (opts.onchange) opts.onchange(); } });
+  return h("div", {}, h("label", {}, label), el);
+}
+
+function vistaInfo(){
+  return h("details", { class: "card", open: !menu.categorias.length },
+    h("summary", { style: "padding:0" }, h("h2", { style: "margin:0;flex:1" }, "Información del restaurante")),
+    campo("Nombre", menu, "restaurante"),
+    campo("Eslogan", menu, "eslogan", { ph: "Brunch & Coffee" }),
+    h("div", { class: "grid2" },
+      campo("Moneda", menu, "moneda", { ph: "L" }),
+      campo("Teléfono", menu, "telefono", { ph: "+504 …", inputmode: "tel" })),
+    campo("Dirección", menu, "direccion"),
+    campo("Horario", menu, "horario", { ph: "Lun–Dom · 7:00 – 15:00" }),
+    campo("Instagram", menu, "instagram", { ph: "@sabora" })
+  );
+}
+
+function mover(arr, i, d){
+  var j = i + d; if (j < 0 || j >= arr.length) return false;
+  var t = arr[i]; arr[i] = arr[j]; arr[j] = t; return true;
+}
+
+function vistaCategoria(cat, ci){
+  var cats = menu.categorias;
+  return h("section", { class: "card" },
+    h("div", { class: "cat-h" },
+      h("input", { type: "text", value: cat.nombre, "aria-label": "Nombre de la categoría", oninput: function(e){ cat.nombre = e.target.value; marcar(); } }),
+      h("button", { class: "ico", "aria-label": "Subir categoría", disabled: ci === 0, onclick: function(){ if (mover(cats, ci, -1)) { marcar(); render(); } } }, "↑"),
+      h("button", { class: "ico", "aria-label": "Bajar categoría", disabled: ci === cats.length - 1, onclick: function(){ if (mover(cats, ci, 1)) { marcar(); render(); } } }, "↓"),
+      h("button", { class: "ico del", "aria-label": "Eliminar categoría", onclick: function(){
+        if (!confirm("¿Eliminar la categoría \"" + cat.nombre + "\" y sus " + (cat.platos || []).length + " platos?")) return;
+        cats.splice(ci, 1); marcar(); render();
+      }}, "🗑")
+    ),
+    (cat.platos || []).map(function(p, pi){ return vistaPlato(p, pi, cat, ci); }),
+    h("button", { class: "add", onclick: function(){
+      var p = { id: nuevoId("plato"), nombre: "Nuevo plato", descripcion: "", precio: null, media: [] };
+      (cat.platos = cat.platos || []).push(p); abiertos.add(p.id); marcar(); render();
+      var el = document.getElementById("p-" + p.id); if (el) { el.scrollIntoView({ block: "center" }); var i = el.querySelector("input"); i.focus(); i.select(); }
+    }}, "+ Agregar plato")
+  );
+}
+
+function nuevoId(base){
+  var s = String(base || "plato").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 30) || "plato";
+  return s + "-" + Date.now().toString(36) + Math.random().toString(36).slice(2, 5);
+}
+
+function fmtPrecio(p){
+  var n = parseFloat(p.precio);
+  return isFinite(n) ? (menu.moneda ? menu.moneda + " " : "") + n : "Sin precio";
+}
+
+function srcVista(path){ return previews.get(path) || path; }
+
+function miniatura(p){
+  var m = (p.media || [])[0]; if (!m) return null;
+  var src = m.tipo === "video" ? m.poster : (m.thumb || m.src);
+  return src ? h("img", { class: "mini", src: srcVista(src), alt: "" }) : h("span", { class: "mini" });
+}
+
+function vistaPlato(p, pi, cat, ci){
+  if (!p.id) p.id = nuevoId(p.nombre);
+  p.media = p.media || [];
+  var platos = cat.platos;
+  var nEl = h("span", { class: "n" }, p.nombre || "(sin nombre)");
+  var prEl = h("span", { class: "p" + (isFinite(parseFloat(p.precio)) ? "" : " falta") }, p.disponible === false ? "Agotado" : fmtPrecio(p));
+  function refrescar(){
+    nEl.textContent = p.nombre || "(sin nombre)";
+    prEl.textContent = p.disponible === false ? "Agotado" : fmtPrecio(p);
+    prEl.className = "p" + (isFinite(parseFloat(p.precio)) ? "" : " falta");
+  }
+
+  var selCat = h("select", { "aria-label": "Mover a otra categoría", onchange: function(e){
+      var to = +e.target.value; if (to === ci) return;
+      platos.splice(pi, 1); (menu.categorias[to].platos = menu.categorias[to].platos || []).push(p);
+      marcar(); render();
+    }},
+    menu.categorias.map(function(c, i){ return h("option", { value: i, selected: i === ci }, i === ci ? "Categoría: " + c.nombre : "Mover a: " + c.nombre); }));
+
+  return h("details", { class: "prod", id: "p-" + p.id, open: abiertos.has(p.id),
+      ontoggle: function(e){ e.target.open ? abiertos.add(p.id) : abiertos.delete(p.id); } },
+    h("summary", {}, miniatura(p), nEl, prEl),
+    h("div", { class: "pb" },
+      campo("Nombre", p, "nombre", { onchange: refrescar }),
+      campo("Descripción", p, "descripcion", { area: true }),
+      campo("Precio (" + (menu.moneda || "") + ")", p, "precio", { inputmode: "decimal", ph: "Ej. 185", onchange: refrescar,
+        parse: function(v){ var n = parseFloat(String(v).replace(",", ".")); return isFinite(n) ? n : null; } }),
+      h("div", { class: "checks" },
+        h("label", {}, h("input", { type: "checkbox", checked: p.disponible !== false, onchange: function(e){ p.disponible = e.target.checked; marcar(); refrescar(); } }), "Disponible"),
+        h("label", {}, h("input", { type: "checkbox", checked: !!p.destacado, onchange: function(e){ p.destacado = e.target.checked; marcar(); } }), "Recomendado")
+      ),
+      h("label", {}, "Fotos y videos (se ven al tocar el plato)"),
+      p.media.length ? h("div", { class: "media" }, p.media.map(function(m, mi){ return tile(p, m, mi); })) : h("p", { class: "muted", style: "margin:4px 0" }, "Aún no tiene fotos ni videos."),
+      h("div", { class: "row" },
+        h("button", { onclick: function(){ elegir(p, "foto"); } }, "📷 Agregar foto"),
+        h("button", { onclick: function(){ elegir(p, "video"); } }, "🎬 Agregar video")
+      ),
+      h("div", { class: "row" },
+        selCat
+      ),
+      h("div", { class: "row" },
+        h("button", { disabled: pi === 0, onclick: function(){ if (mover(platos, pi, -1)) { marcar(); render(); } } }, "↑ Subir"),
+        h("button", { disabled: pi === platos.length - 1, onclick: function(){ if (mover(platos, pi, 1)) { marcar(); render(); } } }, "↓ Bajar"),
+        h("button", { class: "del", onclick: function(){
+          if (!confirm("¿Eliminar \"" + p.nombre + "\"?")) return;
+          platos.splice(pi, 1); marcar(); render();
+        }}, "Eliminar")
+      )
+    )
+  );
+}
+
+function tile(p, m, mi){
+  var media = p.media;
+  var vis = m.tipo === "video"
+    ? (m.poster ? h("img", { src: srcVista(m.poster), alt: "" }) : h("video", { src: srcVista(m.src), muted: true, playsinline: true, preload: "metadata" }))
+    : h("img", { src: srcVista(m.thumb || m.src), alt: "" });
+  return h("div", { class: "tile" }, vis,
+    m.tipo === "video" ? h("span", { class: "tag" }, "▶ video") : null,
+    h("div", { class: "acts" },
+      h("button", { "aria-label": "Mover antes", onclick: function(){ if (mover(media, mi, -1)) { marcar(); render(); } } }, "◀"),
+      h("button", { "aria-label": "Quitar", onclick: function(){ if (confirm("¿Quitar este archivo?")) { media.splice(mi, 1); marcar(); render(); } } }, "✕"),
+      h("button", { "aria-label": "Mover después", onclick: function(){ if (mover(media, mi, 1)) { marcar(); render(); } } }, "▶")
+    ));
+}
+
+// ===== Fotos y videos =====
+function elegir(p, tipo){
+  fileInput.value = "";
+  fileInput.accept = tipo === "foto" ? "image/*" : "video/*";
+  fileInput.multiple = tipo === "foto";
+  fileInput.onchange = function(){
+    var files = [].slice.call(fileInput.files || []);
+    if (!files.length) return;
+    var i = 0;
+    (function sig(){
+      if (i >= files.length) { estado(""); render(); return; }
+      var f = files[i++];
+      estado("Procesando " + (tipo === "foto" ? "foto" : "video") + (files.length > 1 ? " " + i + "/" + files.length : "") + "…");
+      (tipo === "foto" ? agregarFoto(p, f) : agregarVideo(p, f))
+        .then(sig)
+        .catch(function(e){ console.error(e); estado("No se pudo usar ese archivo: " + e.message, "err"); render(); });
+    })();
+  };
+  fileInput.click();
+}
+
+function cargarImagen(file){
+  if (window.createImageBitmap) {
+    return createImageBitmap(file).catch(function(){ return imgElemento(file); });
+  }
+  return imgElemento(file);
+}
+function imgElemento(src){
+  return new Promise(function(res, rej){
+    var url = src instanceof Blob ? URL.createObjectURL(src) : src;
+    var img = new Image();
+    img.onload = function(){ res(img); };
+    img.onerror = function(){ rej(new Error("formato de imagen no soportado")); };
+    img.src = url;
+  });
+}
+
+// Redimensiona y comprime (WebP si el navegador puede, si no JPEG)
+function comprimir(img, max, q){
+  var w = img.width || img.videoWidth, hgt = img.height || img.videoHeight;
+  var s = Math.min(1, max / Math.max(w, hgt));
+  var c = document.createElement("canvas");
+  c.width = Math.round(w * s); c.height = Math.round(hgt * s);
+  c.getContext("2d").drawImage(img, 0, 0, c.width, c.height);
+  return new Promise(function(r){ c.toBlob(r, "image/webp", q); }).then(function(b){
+    if (b && b.type === "image/webp") return b;
+    return new Promise(function(r){ c.toBlob(r, "image/jpeg", q); });
+  });
+}
+function ext(blob){ return blob.type === "image/webp" ? "webp" : "jpg"; }
+
+function guardarArchivo(path, blob){
+  pend.set(path, blob);
+  previews.set(path, URL.createObjectURL(blob));
+}
+
+function agregarFoto(p, file){
+  return cargarImagen(file).then(function(img){
+    return Promise.all([comprimir(img, 1400, 0.8), comprimir(img, 300, 0.75)]);
+  }).then(function(r){
+    var base = "media/" + nuevoId(p.nombre);
+    var src = base + "." + ext(r[0]), thumb = base + "-t." + ext(r[1]);
+    guardarArchivo(src, r[0]); guardarArchivo(thumb, r[1]);
+    p.media.push({ tipo: "foto", src: src, thumb: thumb });
+    abiertos.add(p.id); marcar();
+  });
+}
+
+function portada(file){
+  // Toma un cuadro del video para usarlo como portada (carga más rápido que el video)
+  return new Promise(function(res){
+    var url = URL.createObjectURL(file), v = document.createElement("video"), listo = false;
+    var fin = function(x){ if (listo) return; listo = true; clearTimeout(t); res(x); };
+    var t = setTimeout(function(){ fin(null); }, 6000);
+    v.muted = true; v.playsInline = true; v.preload = "auto"; v.src = url;
+    v.addEventListener("loadeddata", function(){ v.currentTime = Math.min(0.5, (v.duration || 1) / 2); });
+    v.addEventListener("seeked", function(){ comprimir(v, 900, 0.78).then(fin, function(){ fin(null); }); });
+    v.addEventListener("error", function(){ fin(null); });
+    v.load();
+  });
+}
+
+function agregarVideo(p, file){
+  if (file.size > MAX_VIDEO_MB * 1024 * 1024) {
+    return Promise.reject(new Error("el video pesa " + Math.round(file.size / 1048576) + " MB; el máximo es " + MAX_VIDEO_MB + " MB. Usa un clip más corto (10–20 s)."));
+  }
+  return portada(file).then(function(poster){
+    var base = "media/" + nuevoId(p.nombre);
+    var e = (file.name.split(".").pop() || "mp4").toLowerCase().replace(/[^a-z0-9]/g, "") || "mp4";
+    var item = { tipo: "video", src: base + "." + e };
+    guardarArchivo(item.src, file);
+    if (poster) { item.poster = base + "-p." + ext(poster); guardarArchivo(item.poster, poster); }
+    p.media.push(item);
+    abiertos.add(p.id); marcar();
+  });
+}
+
+// ===== Guardar (un solo commit en GitHub) =====
+btnGuardar.addEventListener("click", function(){
+  if (guardando) return;
+  guardando = true; btnGuardar.disabled = true;
+  var usadas = new Set(rutasMedia());
+  var subir = [].concat(Array.from(pend.keys()).filter(function(k){ return usadas.has(k); }));
+  var borrar = Array.from(committed).filter(function(k){ return !usadas.has(k) && k.indexOf("media/") === 0; });
+  var baseCommit, baseTree, tree = [];
+
+  estado("Guardando…");
+  gh("git/ref/heads/" + BRANCH).then(function(ref){
+    baseCommit = ref.object.sha;
+    return gh("git/commits/" + baseCommit);
+  }).then(function(c){
+    baseTree = c.tree.sha;
+    var i = 0;
+    return subir.reduce(function(prom, path){
+      return prom.then(function(){
+        estado("Subiendo archivo " + (++i) + " de " + subir.length + "…");
+        return blobToBase64(pend.get(path)).then(function(b64){
+          return gh("git/blobs", { method: "POST", body: { content: b64, encoding: "base64" } });
+        }).then(function(b){ tree.push({ path: path, mode: "100644", type: "blob", sha: b.sha }); });
+      });
+    }, Promise.resolve());
+  }).then(function(){
+    estado("Guardando menú…");
+    tree.push({ path: "menu.json", mode: "100644", type: "blob", content: JSON.stringify(menu, null, 2) + "\n" });
+    var conBorrados = tree.concat(borrar.map(function(path){ return { path: path, mode: "100644", type: "blob", sha: null }; }));
+    return gh("git/trees", { method: "POST", body: { base_tree: baseTree, tree: conBorrados } })
+      .catch(function(){ return gh("git/trees", { method: "POST", body: { base_tree: baseTree, tree: tree } }); });
+  }).then(function(t){
+    return gh("git/commits", { method: "POST", body: { message: "Actualizar menú desde el editor", tree: t.sha, parents: [baseCommit] } });
+  }).then(function(c){
+    return gh("git/refs/heads/" + BRANCH, { method: "PATCH", body: { sha: c.sha } });
+  }).then(function(){
+    pend.clear();
+    committed = usadas;
+    dirty = false; btnGuardar.hidden = true;
+    estado("✅ Guardado. El menú público se actualiza en 1–2 minutos.", "ok");
+    setTimeout(function(){ if (!dirty) estado(""); }, 8000);
+  }).catch(function(e){
+    console.error(e);
+    estado("❌ No se pudo guardar: " + e.message + ". Revisa tu conexión e intenta de nuevo.", "err");
+  }).then(function(){ guardando = false; btnGuardar.disabled = false; });
+});
+
+if (token) cargar(); else vistaLogin();
+</script>
+</body>
+</html>
