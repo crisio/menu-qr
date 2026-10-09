@@ -104,7 +104,7 @@
           "id": "fetuccini-alfredo",
           "nombre": "Fetuccini Alfredo con pollo",
           "descripcion": "Pasta fetuccini con salsa Alfredo, pechuga de pollo y queso parmesano. Acompañado de pan con ajo.",
-          "precio": null,
+          "precio": 215,
           "media": []
         }
       ]
