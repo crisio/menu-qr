@@ -77,7 +77,7 @@
           "id": "chicken-pesto-panini",
           "nombre": "Chicken Pesto Panini",
           "descripcion": "Pechuga de pollo marinada, mozzarella fresca, pesto de albahaca, tomate y pan ciabatta tostado.",
-          "precio": null,
+          "precio": 190,
           "media": []
         }
       ]
