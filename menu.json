@@ -97,7 +97,7 @@
           "id": "chicken-mushroom",
           "nombre": "Chicken & Mushroom",
           "descripcion": "Pechuga de pollo a la parrilla, bañada en una cremosa salsa de hongos, acompañada de puré de papa artesanal y vegetales salteados.",
-          "precio": null,
+          "precio": 240,
           "media": []
         },
         {
