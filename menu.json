@@ -35,7 +35,7 @@
           "id": "desayuno-sabora",
           "nombre": "Desayuno Sabora",
           "descripcion": "Huevos al gusto, tocino, pan artesanal tostado, mantequilla y frutas frescas.",
-          "precio": null,
+          "precio": 120,
           "destacado": true,
           "media": []
         },
@@ -116,13 +116,6 @@
           "id": "crispy-boneless",
           "nombre": "Crispy Boneless",
           "descripcion": "Trozos de pollo crujiente acompañados de papas fritas y salsa a elección.",
-          "precio": null,
-          "media": []
-        },
-        {
-          "id": "mozzarella-sticks",
-          "nombre": "Mozzarella Sticks",
-          "descripcion": "Palitos de mozzarella empanizados.",
           "precio": null,
           "media": []
         }
