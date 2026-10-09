@@ -69,7 +69,7 @@
           "id": "sabora-smash-burger",
           "nombre": "Sabora smash burger",
           "descripcion": "Doble smash de res a la plancha, queso fundido, salsa especial, en pan brioche dorado.",
-          "precio": null,
+          "precio": 210,
           "destacado": true,
           "media": []
         },
