@@ -55,7 +55,7 @@
           "id": "crispy-chicken-sandwich",
           "nombre": "Crispy chicken sandwich",
           "descripcion": "Pollo crujiente, pan brioche, pepinillos y salsa especial.",
-          "precio": null,
+          "precio": 190,
           "media": []
         },
         {
