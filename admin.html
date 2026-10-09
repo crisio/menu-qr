@@ -94,6 +94,7 @@ var MAX_VIDEO_MB = 40;
 // ===== Estado =====
 var token = store("get") || "";
 var menu = null;            // contenido de menu.json
+var menuSha = null;         // versión de menu.json que se cargó (para detectar cambios desde otro dispositivo)
 var pend = new Map();       // ruta -> Blob por subir
 var previews = new Map();   // ruta -> objectURL (para ver fotos recién subidas)
 var committed = new Set();  // archivos de media/ que ya están en el repo
@@ -210,7 +211,11 @@ function cargar(){
   app.replaceChildren();
   gh("").then(function(repo){
     if (!repo.permissions || !repo.permissions.push) throw Object.assign(new Error("El token no tiene permiso de escritura."), { status: 403 });
-    return gh("contents/menu.json?ref=" + BRANCH, { raw: true });
+    return gh("contents/menu.json?ref=" + BRANCH);
+  }).then(function(f){
+    menuSha = f.sha;
+    var bin = atob(f.content.replace(/\s/g, ""));
+    return new TextDecoder().decode(Uint8Array.from(bin, function(c){ return c.charCodeAt(0); }));
   }).then(function(txt){
     menu = JSON.parse(txt);
     menu.categorias = menu.categorias || [];
@@ -496,10 +501,15 @@ function guardar(){
   var usadas = new Set(rutasMedia());
   var subir = [].concat(Array.from(pend.keys()).filter(function(k){ return usadas.has(k); }));
   var borrar = Array.from(committed).filter(function(k){ return !usadas.has(k) && k.indexOf("media/") === 0; });
-  var baseCommit, baseTree, tree = [];
+  var baseCommit, baseTree, tree = [], nuevoSha;
 
   estado("Guardando…");
-  gh("git/ref/heads/" + BRANCH).then(function(ref){
+  gh("contents/menu.json?ref=" + BRANCH).then(function(f){
+    if (menuSha && f.sha !== menuSha) {
+      var e = new Error("cambio-externo"); e.externo = true; throw e;
+    }
+    return gh("git/ref/heads/" + BRANCH);
+  }).then(function(ref){
     baseCommit = ref.object.sha;
     return gh("git/commits/" + baseCommit);
   }).then(function(c){
@@ -515,7 +525,10 @@ function guardar(){
     }, Promise.resolve());
   }).then(function(){
     estado("Guardando menú…");
-    tree.push({ path: "menu.json", mode: "100644", type: "blob", content: json });
+    return gh("git/blobs", { method: "POST", body: { content: json, encoding: "utf-8" } });
+  }).then(function(b){
+    nuevoSha = b.sha;
+    tree.push({ path: "menu.json", mode: "100644", type: "blob", sha: b.sha });
     var conBorrados = tree.concat(borrar.map(function(path){ return { path: path, mode: "100644", type: "blob", sha: null }; }));
     return gh("git/trees", { method: "POST", body: { base_tree: baseTree, tree: conBorrados } })
       .catch(function(){ return gh("git/trees", { method: "POST", body: { base_tree: baseTree, tree: tree } }); });
@@ -526,11 +539,19 @@ function guardar(){
   }).then(function(){
     subir.forEach(function(k){ pend.delete(k); });
     committed = usadas;
+    menuSha = nuevoSha;
     if (version === v) dirty = false; // si editaste mientras guardaba, sigue pendiente
     estado("✅ Cambios guardados. Publicando en el menú (1–2 minutos)…", "ok");
     revisarPublicado(json, 0);
   }).catch(function(e){
     console.error(e);
+    if (e.externo) {
+      estado("⚠️ El menú fue modificado desde otro dispositivo. No guardé para no borrar esos cambios.", "err");
+      if (confirm("El menú se modificó desde otro dispositivo (o desde otra ventana).\n\nAceptar: recargar el menú actualizado (se pierden los cambios que hiciste aquí y no has guardado).\nCancelar: quedarte aquí.")) {
+        dirty = false; pend.clear(); cargar();
+      }
+      return;
+    }
     estado("❌ No se pudo guardar: " + e.message + ". Revisa tu conexión e intenta de nuevo.", "err");
   }).then(function(){ guardando = false; botones(); });
 }

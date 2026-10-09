@@ -5,7 +5,7 @@
   "telefono": "",
   "direccion": "",
   "horario": "",
-  "instagram": "",
+  "instagram": "sabora",
   "categorias": [
     {
       "nombre": "Desayunos",
@@ -53,7 +53,7 @@
       "platos": [
         {
           "id": "crispy-chicken-sandwich",
-          "nombre": "Crispy chicken sandwich",
+          "nombre": "Sandwich de pollo Crispy",
           "descripcion": "Pollo crujiente, pan brioche, pepinillos y salsa especial.",
           "precio": 190,
           "media": []
@@ -67,7 +67,7 @@
         },
         {
           "id": "sabora-smash-burger",
-          "nombre": "Sabora smash burger",
+          "nombre": "Hamburguesa Smash Sabora",
           "descripcion": "Doble smash de res a la plancha, queso fundido, salsa especial, en pan brioche dorado.",
           "precio": 210,
           "destacado": true,
@@ -75,7 +75,7 @@
         },
         {
           "id": "chicken-pesto-panini",
-          "nombre": "Chicken Pesto Panini",
+          "nombre": "Panini de pollo al pesto",
           "descripcion": "Pechuga de pollo marinada, mozzarella fresca, pesto de albahaca, tomate y pan ciabatta tostado.",
           "precio": 190,
           "media": []
@@ -95,7 +95,7 @@
         },
         {
           "id": "chicken-mushroom",
-          "nombre": "Chicken & Mushroom",
+          "nombre": "Pollo y Champiñones",
           "descripcion": "Pechuga de pollo a la parrilla, bañada en una cremosa salsa de hongos, acompañada de puré de papa artesanal y vegetales salteados.",
           "precio": 240,
           "media": []
@@ -117,6 +117,261 @@
           "nombre": "Crispy Boneless",
           "descripcion": "Trozos de pollo crujiente acompañados de papas fritas y salsa a elección.",
           "precio": 190,
+          "media": []
+        },
+        {
+          "id": "jalapeno-popp",
+          "nombre": "Jalapeño Popp",
+          "descripcion": "Jalapeños rellenos de queso crema, crujientes por fuera y cremosos por dentro.",
+          "precio": null,
+          "media": []
+        }
+      ]
+    },
+    {
+      "nombre": "Bebidas calientes",
+      "platos": [
+        {
+          "id": "americano",
+          "nombre": "Americano",
+          "descripcion": "",
+          "precio": null,
+          "media": []
+        },
+        {
+          "id": "latte",
+          "nombre": "Latte",
+          "descripcion": "",
+          "precio": null,
+          "media": []
+        },
+        {
+          "id": "hot-caramel-macchiato",
+          "nombre": "Hot caramel macchiato",
+          "descripcion": "",
+          "precio": null,
+          "media": []
+        },
+        {
+          "id": "chai-latte",
+          "nombre": "Chai Latte",
+          "descripcion": "",
+          "precio": null,
+          "media": []
+        }
+      ]
+    },
+    {
+      "nombre": "Bebidas frías",
+      "platos": [
+        {
+          "id": "iced-latte",
+          "nombre": "Iced latte",
+          "descripcion": "",
+          "precio": null,
+          "media": []
+        },
+        {
+          "id": "iced-caramel-macchiato",
+          "nombre": "Iced caramel macchiato",
+          "descripcion": "",
+          "precio": null,
+          "media": []
+        },
+        {
+          "id": "iced-latte-dulce-de-leche",
+          "nombre": "Iced latte \"dulce de leche\"",
+          "descripcion": "",
+          "precio": null,
+          "media": []
+        }
+      ]
+    },
+    {
+      "nombre": "Bubble Tea",
+      "platos": [
+        {
+          "id": "brown-sugar-bubble",
+          "nombre": "Brown sugar bubble",
+          "descripcion": "",
+          "precio": null,
+          "media": []
+        },
+        {
+          "id": "taro-bubble",
+          "nombre": "Taro bubble",
+          "descripcion": "",
+          "precio": null,
+          "media": []
+        },
+        {
+          "id": "coffee-bubble",
+          "nombre": "Coffee bubble",
+          "descripcion": "",
+          "precio": null,
+          "media": []
+        }
+      ]
+    },
+    {
+      "nombre": "Popping Boba",
+      "platos": [
+        {
+          "id": "fresa-popping-boba",
+          "nombre": "Fresa popping boba",
+          "descripcion": "",
+          "precio": null,
+          "media": []
+        },
+        {
+          "id": "maracuya-popping-boba",
+          "nombre": "Maracuyá popping boba",
+          "descripcion": "",
+          "precio": null,
+          "media": []
+        },
+        {
+          "id": "mango-popping-boba",
+          "nombre": "Mango popping boba",
+          "descripcion": "",
+          "precio": null,
+          "media": []
+        }
+      ]
+    },
+    {
+      "nombre": "Matcha",
+      "platos": [
+        {
+          "id": "matcha-latte",
+          "nombre": "Matcha Latte",
+          "descripcion": "",
+          "precio": null,
+          "media": []
+        },
+        {
+          "id": "strawberry-matcha-latte",
+          "nombre": "Strawberry matcha latte",
+          "descripcion": "",
+          "precio": null,
+          "media": []
+        },
+        {
+          "id": "coco-water-matcha",
+          "nombre": "Coco water matcha",
+          "descripcion": "",
+          "precio": null,
+          "media": []
+        }
+      ]
+    },
+    {
+      "nombre": "Chai",
+      "platos": [
+        {
+          "id": "iced-chai-latte",
+          "nombre": "Iced chai latte",
+          "descripcion": "",
+          "precio": null,
+          "media": []
+        },
+        {
+          "id": "hot-chai-latte",
+          "nombre": "Hot chai latte",
+          "descripcion": "",
+          "precio": null,
+          "media": []
+        }
+      ]
+    },
+    {
+      "nombre": "Smoothies",
+      "platos": [
+        {
+          "id": "smoothie-de-fresa",
+          "nombre": "Smoothie de fresa",
+          "descripcion": "",
+          "precio": null,
+          "media": []
+        },
+        {
+          "id": "smoothie-de-maracuya",
+          "nombre": "Smoothie de maracuyá",
+          "descripcion": "",
+          "precio": null,
+          "media": []
+        },
+        {
+          "id": "smoothie-de-banano",
+          "nombre": "Smoothie de banano",
+          "descripcion": "",
+          "precio": null,
+          "media": []
+        },
+        {
+          "id": "smoothie-de-blueberry",
+          "nombre": "Smoothie de blueberry",
+          "descripcion": "",
+          "precio": null,
+          "media": []
+        }
+      ]
+    },
+    {
+      "nombre": "Jugos naturales",
+      "platos": [
+        {
+          "id": "jugos-naturales-sandia",
+          "nombre": "Sandía",
+          "descripcion": "",
+          "precio": null,
+          "media": []
+        },
+        {
+          "id": "jugos-naturales-pina",
+          "nombre": "Piña",
+          "descripcion": "",
+          "precio": null,
+          "media": []
+        },
+        {
+          "id": "jugos-naturales-maracuya",
+          "nombre": "Maracuyá",
+          "descripcion": "",
+          "precio": null,
+          "media": []
+        },
+        {
+          "id": "limonada-fresa",
+          "nombre": "Limonada fresa",
+          "descripcion": "",
+          "precio": null,
+          "media": []
+        }
+      ]
+    },
+    {
+      "nombre": "Jugos verdes",
+      "platos": [
+        {
+          "id": "green-detox",
+          "nombre": "Green Detox",
+          "descripcion": "Piña, pepino, apio y limón.",
+          "precio": null,
+          "media": []
+        },
+        {
+          "id": "green-energy",
+          "nombre": "Green Energy",
+          "descripcion": "Manzana verde, pepino, espinaca y limón.",
+          "precio": null,
+          "media": []
+        },
+        {
+          "id": "tropical-green",
+          "nombre": "Tropical Green",
+          "descripcion": "Piña, espinaca, pepino y jengibre.",
+          "precio": null,
           "media": []
         }
       ]
