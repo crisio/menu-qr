@@ -43,7 +43,7 @@
           "id": "tostadas-francesas",
           "nombre": "Tostadas Francesas",
           "descripcion": "Pan dorado con frutas frescas, miel y canela.",
-          "precio": null,
+          "precio": 145,
           "media": []
         }
       ]
