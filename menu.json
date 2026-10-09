@@ -89,7 +89,7 @@
           "id": "steak-sabora",
           "nombre": "Steak SABORA",
           "descripcion": "Jugoso corte de res a la parrilla, acompañado de puré de papa cremoso, vegetales salteados y salsa de la casa.",
-          "precio": null,
+          "precio": 295,
           "destacado": true,
           "media": []
         },
