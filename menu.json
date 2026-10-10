@@ -194,21 +194,21 @@
           "id": "brown-sugar-bubble",
           "nombre": "Brown sugar bubble",
           "descripcion": "",
-          "precio": null,
+          "precio": 110,
           "media": []
         },
         {
           "id": "taro-bubble",
           "nombre": "Taro bubble",
           "descripcion": "",
-          "precio": null,
+          "precio": 110,
           "media": []
         },
         {
           "id": "coffee-bubble",
           "nombre": "Coffee bubble",
           "descripcion": "",
-          "precio": null,
+          "precio": 110,
           "media": []
         }
       ]
@@ -220,21 +220,21 @@
           "id": "fresa-popping-boba",
           "nombre": "Fresa popping boba",
           "descripcion": "",
-          "precio": null,
+          "precio": 110,
           "media": []
         },
         {
           "id": "maracuya-popping-boba",
           "nombre": "Maracuyá popping boba",
           "descripcion": "",
-          "precio": null,
+          "precio": 110,
           "media": []
         },
         {
           "id": "mango-popping-boba",
           "nombre": "Mango popping boba",
           "descripcion": "",
-          "precio": null,
+          "precio": 110,
           "media": []
         }
       ]
@@ -246,21 +246,21 @@
           "id": "matcha-latte",
           "nombre": "Matcha Latte",
           "descripcion": "",
-          "precio": null,
+          "precio": 90,
           "media": []
         },
         {
           "id": "strawberry-matcha-latte",
           "nombre": "Strawberry matcha latte",
           "descripcion": "",
-          "precio": null,
+          "precio": 105,
           "media": []
         },
         {
           "id": "coco-water-matcha",
           "nombre": "Coco water matcha",
           "descripcion": "",
-          "precio": null,
+          "precio": 95,
           "media": []
         }
       ]
@@ -272,14 +272,14 @@
           "id": "iced-chai-latte",
           "nombre": "Iced chai latte",
           "descripcion": "",
-          "precio": null,
+          "precio": 85,
           "media": []
         },
         {
           "id": "hot-chai-latte",
           "nombre": "Hot chai latte",
           "descripcion": "",
-          "precio": null,
+          "precio": 80,
           "media": []
         }
       ]
