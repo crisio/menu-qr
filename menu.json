@@ -291,28 +291,28 @@
           "id": "smoothie-de-fresa",
           "nombre": "Smoothie de fresa",
           "descripcion": "",
-          "precio": null,
+          "precio": 80,
           "media": []
         },
         {
           "id": "smoothie-de-maracuya",
           "nombre": "Smoothie de maracuyá",
           "descripcion": "",
-          "precio": null,
+          "precio": 80,
           "media": []
         },
         {
           "id": "smoothie-de-banano",
           "nombre": "Smoothie de banano",
           "descripcion": "",
-          "precio": null,
+          "precio": 70,
           "media": []
         },
         {
           "id": "smoothie-de-blueberry",
           "nombre": "Smoothie de blueberry",
           "descripcion": "",
-          "precio": null,
+          "precio": 90,
           "media": []
         }
       ]
@@ -324,28 +324,28 @@
           "id": "jugos-naturales-sandia",
           "nombre": "Sandía",
           "descripcion": "",
-          "precio": null,
+          "precio": 55,
           "media": []
         },
         {
           "id": "jugos-naturales-pina",
           "nombre": "Piña",
           "descripcion": "",
-          "precio": null,
+          "precio": 55,
           "media": []
         },
         {
           "id": "jugos-naturales-maracuya",
           "nombre": "Maracuyá",
           "descripcion": "",
-          "precio": null,
+          "precio": 50,
           "media": []
         },
         {
           "id": "limonada-fresa",
           "nombre": "Limonada fresa",
           "descripcion": "",
-          "precio": null,
+          "precio": 70,
           "media": []
         }
       ]
@@ -357,21 +357,21 @@
           "id": "green-detox",
           "nombre": "Green Detox",
           "descripcion": "Piña, pepino, apio y limón.",
-          "precio": null,
+          "precio": 75,
           "media": []
         },
         {
           "id": "green-energy",
           "nombre": "Green Energy",
           "descripcion": "Manzana verde, pepino, espinaca y limón.",
-          "precio": null,
+          "precio": 80,
           "media": []
         },
         {
           "id": "tropical-green",
           "nombre": "Tropical Green",
           "descripcion": "Piña, espinaca, pepino y jengibre.",
-          "precio": null,
+          "precio": 75,
           "media": []
         }
       ]
