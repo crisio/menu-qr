@@ -135,28 +135,28 @@
           "id": "americano",
           "nombre": "Americano",
           "descripcion": "",
-          "precio": null,
+          "precio": 55,
           "media": []
         },
         {
           "id": "latte",
           "nombre": "Latte",
           "descripcion": "",
-          "precio": null,
+          "precio": 70,
           "media": []
         },
         {
           "id": "hot-caramel-macchiato",
           "nombre": "Hot caramel macchiato",
           "descripcion": "",
-          "precio": null,
+          "precio": 80,
           "media": []
         },
         {
           "id": "chai-latte",
           "nombre": "Chai Latte",
           "descripcion": "",
-          "precio": null,
+          "precio": 80,
           "media": []
         }
       ]
