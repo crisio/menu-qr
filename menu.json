@@ -168,21 +168,21 @@
           "id": "iced-latte",
           "nombre": "Iced latte",
           "descripcion": "",
-          "precio": null,
+          "precio": 75,
           "media": []
         },
         {
           "id": "iced-caramel-macchiato",
           "nombre": "Iced caramel macchiato",
           "descripcion": "",
-          "precio": null,
+          "precio": 80,
           "media": []
         },
         {
           "id": "iced-latte-dulce-de-leche",
           "nombre": "Iced latte \"dulce de leche\"",
           "descripcion": "",
-          "precio": null,
+          "precio": 85,
           "media": []
         }
       ]
