@@ -16,7 +16,10 @@ Menú digital de **SABORA · Brunch & Coffee**, accesible por código QR.
 ## Pedidos por WhatsApp
 
 - El cliente toca un plato, elige la cantidad y **Agregar**. Puede sumar varios platos; abajo aparece **Ver mi pedido** con el total.
-- En **Tu pedido** escribe su nombre y elige **En el local** (con mesa opcional) o **A domicilio** (con dirección y, si quiere, su ubicación GPS).
+- Mientras haya algo en el pedido, el botón suelto de WhatsApp se oculta, para que el pedido siempre salga con la orden completa.
+- En **Tu pedido** elige **En el local** o **A domicilio**:
+  - **En el local:** número de mesa opcional. Si pone la mesa, el nombre es opcional; si no tiene mesa, el nombre es obligatorio (para llamarlo cuando esté listo).
+  - **A domicilio:** nombre y dirección obligatorios; si quiere, agrega su ubicación GPS.
 - Si el local tiene ubicación guardada, el menú revisa dónde está el cliente: fuera del radio lo marca **A domicilio**, dentro lo marca **En el local**. El cliente puede cambiarlo.
 - **Enviar pedido por WhatsApp** abre WhatsApp con todo el pedido escrito: platos, cantidades, total, nombre y entrega.
 - Para guardar la ubicación del local: abre el editor **estando en el local** → *Información del restaurante* → **📍 Usar mi ubicación actual** → **Guardar cambios**. El radio (150 m por defecto) se cambia ahí mismo.

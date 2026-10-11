@@ -120,8 +120,8 @@ body.con-wa footer{padding-bottom:calc(110px + env(safe-area-inset-bottom))}
 .qty button{width:44px;height:50px;border:0;background:none;color:var(--green);font:600 24px/1 var(--ui);cursor:pointer;touch-action:manipulation}
 .qty span{min-width:22px;text-align:center;font:600 17px var(--ui)}
 .add-btn{flex:1;min-height:52px;border:0;border-radius:14px;background:var(--green);color:#fff;font:600 16.5px var(--ui);cursor:pointer;touch-action:manipulation}
-.cart-bar{position:fixed;left:calc(16px + env(safe-area-inset-left));right:calc(90px + env(safe-area-inset-right));bottom:calc(21px + env(safe-area-inset-bottom));z-index:20;
-  display:flex;align-items:center;gap:10px;max-width:520px;height:56px;padding:0 16px 0 10px;border:0;border-radius:16px;background:var(--green);color:#fff;
+.cart-bar{position:fixed;left:calc(16px + env(safe-area-inset-left));right:calc(16px + env(safe-area-inset-right));bottom:calc(18px + env(safe-area-inset-bottom));z-index:20;
+  display:flex;align-items:center;gap:10px;max-width:560px;margin:0 auto;height:56px;padding:0 16px 0 10px;border:0;border-radius:16px;background:var(--green);color:#fff;
   font:600 16px var(--ui);box-shadow:0 8px 22px rgba(0,0,0,.25);cursor:pointer;touch-action:manipulation}
 .cart-bar[hidden]{display:none}
 .cart-bar.bump{animation:bump .4s ease}
@@ -211,12 +211,12 @@ body.con-wa footer{padding-bottom:calc(110px + env(safe-area-inset-bottom))}
       <ul class="lista" id="c-lista"></ul>
       <p class="tot"><span>Total</span><b id="c-tot"></b></p>
       <p class="geo" id="c-sp" hidden>Algunos precios te los confirmamos por WhatsApp.</p>
-      <label class="l" for="c-nom">Tu nombre</label>
-      <input type="text" id="c-nom" autocomplete="name" placeholder="¿A nombre de quién va el pedido?" maxlength="60">
       <span class="l">¿Cómo lo quieres?</span>
       <div class="seg" id="c-tipo"><button type="button" data-t="local" aria-pressed="false">🍽️ En el local</button><button type="button" data-t="domicilio" aria-pressed="false">🛵 A domicilio</button></div>
       <p class="geo" id="c-geo"></p>
-      <div id="c-loc" hidden><label class="l" for="c-mesa">Mesa (opcional)</label><input type="text" id="c-mesa" maxlength="10" placeholder="Ej. 4"></div>
+      <div id="c-loc" hidden><label class="l" for="c-mesa">Número de mesa (opcional)</label><input type="text" id="c-mesa" maxlength="10" placeholder="Si no tienes mesa, déjalo vacío"></div>
+      <label class="l" for="c-nom" id="c-nom-l">Tu nombre</label>
+      <input type="text" id="c-nom" autocomplete="name" placeholder="Para llamarte cuando esté listo" maxlength="60">
       <div id="c-dom" hidden><label class="l" for="c-dir">Dirección o punto de referencia</label><textarea id="c-dir" autocomplete="street-address" maxlength="300" placeholder="Colonia, calle, casa, color del portón…"></textarea><button type="button" class="ubic" id="c-ubic">📍 Enviar mi ubicación GPS</button></div>
       <label class="l" for="c-nota">Nota (opcional)</label>
       <input type="text" id="c-nota" maxlength="200" placeholder="Ej. sin cebolla, poco hielo">
@@ -386,6 +386,7 @@ function actualizar(){
   LS("menu-pedido",Object.keys(pedido).length?JSON.stringify(pedido):null);
   var ls=lineas(),n=ls.reduce(function(s,l){return s+l.q},0);
   bar.hidden=!n||!waNum();
+  $("#wa").hidden=!!n||!waNum(); // con pedido, el botón suelto de WhatsApp se oculta para que no manden un mensaje sin la orden
   $("#cb-n").textContent=n;
   $("#cb-t").textContent=n?fmt(total(ls)):"";
   document.querySelectorAll("#menu .item").forEach(function(b){
@@ -458,7 +459,16 @@ function ponerTipo(t){
   [].forEach.call($("#c-tipo").children,function(b){b.setAttribute("aria-pressed",b.dataset.t===t)});
   $("#c-loc").hidden=t!=="local";
   $("#c-dom").hidden=t!=="domicilio";
+  reglaNombre();
 }
+// En el local con mesa, el nombre es opcional; sin mesa (o a domicilio), es obligatorio
+function conMesa(){return tipo==="local"&&!!$("#c-mesa").value.trim()}
+function reglaNombre(){
+  $("#c-nom-l").textContent=conMesa()?"Tu nombre (opcional)":"Tu nombre";
+  $("#c-nom").placeholder=conMesa()?"Opcional, ya sabemos tu mesa":"Para llamarte cuando esté listo";
+  if(conMesa())$("#c-nom").setCustomValidity("");
+}
+$("#c-mesa").addEventListener("input",reglaNombre);
 $("#c-tipo").addEventListener("click",function(e){
   var b=e.target.closest("button");if(!b)return;
   tipoManual=true;ponerTipo(b.dataset.t);geoMsg(geoTxt);
@@ -509,20 +519,20 @@ $("#c-f").addEventListener("submit",function(e){
   e.preventDefault();
   var ls=lineas();if(!ls.length)return;
   var nom=$("#c-nom").value.trim(),dir=$("#c-dir").value.trim(),mesa=$("#c-mesa").value.trim(),nota=$("#c-nota").value.trim();
-  if(!nom)return falta($("#c-nom"),"Escribe tu nombre para el pedido.");
   if(!tipo){geoMsg("Elige si es para el local o a domicilio.",true);$("#c-tipo").scrollIntoView({block:"center",behavior:"smooth"});return}
+  if(!nom&&!conMesa())return falta($("#c-nom"),tipo==="local"?"Escribe tu nombre o tu número de mesa.":"Escribe tu nombre para el pedido.");
   if(tipo==="domicilio"&&!dir)return falta($("#c-dir"),"Escribe tu dirección o un punto de referencia.");
   var m=["¡Hola "+data.restaurante+"! 👋 Quiero hacer un pedido:",""];
   ls.forEach(function(l){m.push("• "+l.q+"× "+l.p.nombre+(l.n==null?" (precio por confirmar)":" — "+fmt(l.n*l.q)))});
   m.push("","*Total: "+fmt(total(ls))+"*"+($("#c-sp").hidden?"":" + precios por confirmar"),"");
-  m.push("👤 Nombre: "+nom);
+  if(nom)m.push("👤 Nombre: "+nom);
   if(tipo==="local")m.push("🍽️ Para el local"+(mesa?" · Mesa "+mesa:""));
   else{
     m.push("🛵 A domicilio","📍 Dirección: "+dir);
     if(cliente)m.push("🗺️ Ubicación: https://maps.google.com/?q="+cliente.lat.toFixed(6)+","+cliente.lng.toFixed(6));
   }
   if(nota)m.push("📝 Nota: "+nota);
-  LS("menu-nombre",nom);
+  if(nom)LS("menu-nombre",nom);
   if(dir)LS("menu-direccion",dir);
   window.open(waLink(m.join("\n")),"_blank","noopener");
   pedido={};actualizar();
