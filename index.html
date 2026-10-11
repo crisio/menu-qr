@@ -86,6 +86,30 @@ footer .logo{font-size:24px;margin-bottom:6px}
 .gal:not(:empty)~.sb h2{margin-right:0}
 .sb p{margin:10px 0 0;color:var(--muted);font-size:16.5px;line-height:1.5}
 .sb .pr{display:block;margin-top:16px;color:var(--green);font-size:21px}
+
+/* WhatsApp */
+.wa{position:fixed;right:calc(16px + env(safe-area-inset-right));bottom:calc(18px + env(safe-area-inset-bottom));z-index:20;display:flex;flex-direction:column;align-items:flex-end;gap:12px}
+.wa[hidden]{display:none}
+.wa-btn{position:relative;isolation:isolate;display:grid;place-items:center;width:62px;height:62px;border-radius:50%;background:#25d366;
+  box-shadow:0 6px 18px rgba(0,0,0,.28);animation:latido 2.4s ease-in-out infinite;-webkit-tap-highlight-color:transparent}
+.wa-btn svg{width:34px;height:34px;fill:#fff}
+.wa-btn::before,.wa-btn::after{content:"";position:absolute;inset:0;z-index:-1;border-radius:50%;background:#25d366;animation:onda 2.4s ease-out infinite}
+.wa-btn::after{animation-delay:1.2s}
+@keyframes onda{0%{transform:scale(1);opacity:.55}100%{transform:scale(1.75);opacity:0}}
+@keyframes latido{0%,30%,100%{transform:scale(1)}10%{transform:scale(1.1)}20%{transform:scale(.97)}}
+.wa-globo{position:relative;max-width:min(250px,calc(100vw - 110px));margin-right:4px;padding:12px 34px 12px 15px;border-radius:18px 18px 4px 18px;
+  background:#fff;color:#1e1e1b;font:500 15px/1.35 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;box-shadow:0 8px 26px rgba(0,0,0,.2);
+  cursor:pointer;transform-origin:100% 100%;animation:pop .45s cubic-bezier(.2,1.4,.4,1)}
+.wa-globo[hidden]{display:none}
+.wa-globo b{display:block;color:#128c4a;font-size:13px;margin-bottom:2px}
+.wa-x{position:absolute;top:4px;right:4px;width:28px;height:28px;border:0;background:none;color:#999;font-size:20px;line-height:1;cursor:pointer}
+@keyframes pop{from{transform:scale(.4);opacity:0}}
+body.con-wa footer{padding-bottom:calc(110px + env(safe-area-inset-bottom))}
+.wa-pedir{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:22px;padding:15px;border-radius:14px;background:#25d366;
+  color:#fff;font:600 17px system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;text-decoration:none}
+.wa-pedir svg{width:22px;height:22px;fill:#fff}
+.wa-pedir[hidden]{display:none}
+@media (prefers-reduced-motion:reduce){.wa-btn,.wa-btn::before,.wa-btn::after,.wa-globo{animation:none}}
 </style>
 </head>
 <body>
@@ -115,12 +139,17 @@ footer .logo{font-size:24px;margin-bottom:6px}
 <main id="menu"><p class="msg">Cargando menú…</p></main>
 <footer id="info"></footer>
 
+<div class="wa" id="wa" hidden>
+  <div class="wa-globo" id="wa-g" hidden><button class="wa-x" id="wa-x" aria-label="Cerrar mensaje">&times;</button><b>SABORA</b><span id="wa-t"></span></div>
+  <a class="wa-btn" id="wa-a" target="_blank" rel="noopener" aria-label="Escríbenos por WhatsApp"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg></a>
+</div>
+
 <dialog id="sheet" aria-labelledby="s-t">
   <div class="sin" id="sin">
     <button class="x" id="s-x" aria-label="Cerrar" autofocus>&times;</button>
     <div class="gal" id="s-g"></div>
     <div class="dots" id="s-d"></div>
-    <div class="sb"><h2 id="s-t"></h2><p id="s-p"></p><span class="pr" id="s-pr"></span></div>
+    <div class="sb"><h2 id="s-t"></h2><p id="s-p"></p><span class="pr" id="s-pr"></span><a class="wa-pedir" id="s-wa" target="_blank" rel="noopener" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>Pedir por WhatsApp</a></div>
   </div>
 </dialog>
 
@@ -173,6 +202,26 @@ function render(){
     (ig?'<p><a href="https://instagram.com/'+esc(ig)+'" rel="noopener">@'+esc(ig)+"</a></p>":"");
 
   spy();
+  whatsapp();
+}
+
+// Botón flotante de WhatsApp
+function waNum(){return String(data.whatsapp||"").replace(/\D/g,"")}
+function waLink(msg){return"https://wa.me/"+waNum()+(msg?"?text="+encodeURIComponent(msg):"")}
+function whatsapp(){
+  if(!waNum())return;
+  var g=$("#wa-g");
+  $("#wa").hidden=false;
+  document.body.classList.add("con-wa");
+  $("#wa-a").href=waLink(data.whatsapp_mensaje||"¡Hola "+data.restaurante+"! 👋 Vi el menú y quisiera pedir algo rico 😋");
+  $("#wa-t").textContent=data.whatsapp_globo||"¿Se te antoja algo? 😋 ¡Escríbenos y pide aquí!";
+  $("#wa-g b").textContent=data.restaurante||"";
+  var visto=false;try{visto=sessionStorage.getItem("wa-globo")==="1"}catch(e){}
+  if(!visto)setTimeout(function(){g.hidden=false},2500);
+  var cerrar=function(){g.hidden=true;try{sessionStorage.setItem("wa-globo","1")}catch(e){}};
+  $("#wa-x").addEventListener("click",function(e){e.stopPropagation();cerrar()});
+  g.addEventListener("click",function(){cerrar();window.open($("#wa-a").href,"_blank","noopener")});
+  $("#wa-a").addEventListener("click",cerrar);
 }
 
 // Resalta la categoría visible en las pestañas
@@ -210,6 +259,9 @@ function open(p){
   $("#s-t").innerHTML=esc(p.nombre)+(p.destacado?' <span class="badge">Recomendado</span>':"");
   $("#s-p").textContent=p.descripcion||"";
   $("#s-pr").textContent=precio(p);
+  var w=$("#s-wa"),pr=precio(p);
+  w.hidden=!waNum()||p.disponible===false;
+  if(!w.hidden)w.href=waLink("¡Hola "+data.restaurante+"! 👋 Quisiera pedir: "+p.nombre+(pr?" ("+pr+")":""));
   $("#sin").scrollTop=0;
   sheet.showModal();
   var v=gal.firstElementChild;

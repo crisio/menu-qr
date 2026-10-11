@@ -279,7 +279,17 @@ function vistaInfo(){
       campo("Teléfono", menu, "telefono", { ph: "+504 …", inputmode: "tel" })),
     campo("Dirección", menu, "direccion"),
     campo("Horario", menu, "horario", { ph: "Lun–Dom · 7:00 – 15:00" }),
-    campo("Instagram", menu, "instagram", { ph: "@sabora" })
+    campo("Instagram", menu, "instagram", { ph: "@sabora" }),
+    h("h2", { style: "margin:22px 0 0" }, "WhatsApp"),
+    h("p", { class: "muted", style: "margin:4px 0 0" }, "Botón verde que aparece abajo a la derecha del menú. Si dejas el número vacío, el botón no se muestra."),
+    campo("Número de WhatsApp (con código de país)", menu, "whatsapp", { ph: "+504 9810-5235", inputmode: "tel" }),
+    campo("Texto del globito (lo que ve el cliente)", menu, "whatsapp_globo", { ph: "¿Se te antoja algo? 😋 ¡Escríbenos y pide aquí!" }),
+    campo("Mensaje que te llega (ya escrito en el WhatsApp del cliente)", menu, "whatsapp_mensaje", { area: true, ph: "¡Hola SABORA! 👋 Vi el menú y quisiera pedir algo rico 😋" }),
+    h("button", { class: "add", style: "border-style:solid", onclick: function(){
+      var n = String(menu.whatsapp || "").replace(/\D/g, "");
+      if (!n) { alert("Primero escribe el número de WhatsApp."); return; }
+      window.open("https://wa.me/" + n + "?text=" + encodeURIComponent(menu.whatsapp_mensaje || ""), "_blank", "noopener");
+    }}, "Probar en WhatsApp ↗")
   );
 }
 
