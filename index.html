@@ -207,7 +207,8 @@ function render(){
 
 // Botón flotante de WhatsApp
 function waNum(){return String(data.whatsapp||"").replace(/\D/g,"")}
-function waLink(msg){return"https://wa.me/"+waNum()+(msg?"?text="+encodeURIComponent(msg):"")}
+// api.whatsapp.com y no wa.me: la redirección de wa.me convierte los emojis en �
+function waLink(msg){return"https://api.whatsapp.com/send?phone="+waNum()+(msg?"&text="+encodeURIComponent(msg):"")}
 function whatsapp(){
   if(!waNum())return;
   var g=$("#wa-g");

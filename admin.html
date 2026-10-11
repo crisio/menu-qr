@@ -288,7 +288,7 @@ function vistaInfo(){
     h("button", { class: "add", style: "border-style:solid", onclick: function(){
       var n = String(menu.whatsapp || "").replace(/\D/g, "");
       if (!n) { alert("Primero escribe el número de WhatsApp."); return; }
-      window.open("https://wa.me/" + n + "?text=" + encodeURIComponent(menu.whatsapp_mensaje || ""), "_blank", "noopener");
+      window.open("https://api.whatsapp.com/send?phone=" + n + "&text=" + encodeURIComponent(menu.whatsapp_mensaje || ""), "_blank", "noopener");
     }}, "Probar en WhatsApp ↗")
   );
 }
