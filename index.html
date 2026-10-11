@@ -48,9 +48,20 @@ main{max-width:680px;margin:0 auto;padding:0 16px 24px}
 section{scroll-margin-top:62px;padding-top:22px}
 .cat{margin:0 4px 2px;padding-bottom:8px;border-bottom:1px solid var(--ink);color:var(--green);
   font-size:22px;font-weight:500;letter-spacing:.06em;text-transform:uppercase}
-.item{display:flex;align-items:center;gap:14px;width:100%;padding:16px 4px;border:0;border-bottom:1px solid var(--line);
+.item{display:flex;align-items:center;gap:6px;border-bottom:1px solid var(--line)}
+.abrir{display:flex;align-items:center;gap:14px;flex:1;min-width:0;padding:16px 4px;border:0;
   background:none;color:inherit;font:inherit;text-align:left;cursor:pointer;touch-action:manipulation}
-.item:active{background:rgba(47,95,53,.07)}
+.abrir:active{background:rgba(47,95,53,.07)}
+.mas{flex:none;display:grid;place-items:center;width:42px;height:42px;margin-right:2px;padding:0;border:1.5px solid var(--green);border-radius:50%;
+  background:#fff;color:var(--green);box-shadow:0 1px 4px rgba(0,0,0,.08);cursor:pointer;touch-action:manipulation}
+.mas svg{width:20px;height:20px}
+.mas.en{background:var(--green);color:#fff}
+.mas.pop{animation:tap .35s ease}
+@keyframes tap{40%{transform:scale(1.2)}}
+.tip{display:flex;align-items:center;gap:10px;margin:18px 4px 0;padding:11px 14px;border-radius:14px;background:rgba(47,95,53,.09);
+  color:var(--green);font:500 14.5px/1.35 var(--ui)}
+.tip i{flex:none;display:grid;place-items:center;width:26px;height:26px;border-radius:50%;background:var(--green);color:#fff}
+.tip svg{width:14px;height:14px}
 .tx{flex:1;min-width:0}
 .row{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
 .item h3{margin:0;font-size:17.5px;font-weight:700}
@@ -160,7 +171,7 @@ body.con-wa footer{padding-bottom:calc(110px + var(--abajo))}
   background:#1e1e1b;color:#fff;font:600 14.5px var(--ui);text-align:center;box-shadow:0 6px 20px rgba(0,0,0,.25);transform:translateX(-50%);animation:sube .3s ease}
 @keyframes sube{from{opacity:0;transform:translate(-50%,12px)}}
 .toast[hidden]{display:none}
-@media (prefers-reduced-motion:reduce){.wa-btn,.wa-btn::before,.wa-btn::after,.wa-globo,.cart-bar.bump,.toast{animation:none}}
+@media (prefers-reduced-motion:reduce){.wa-btn,.wa-btn::before,.wa-btn::after,.wa-globo,.cart-bar.bump,.toast,.mas.pop{animation:none}}
 </style>
 </head>
 <body>
@@ -236,6 +247,7 @@ body.con-wa footer{padding-bottom:calc(110px + var(--abajo))}
 var $=function(s){return document.querySelector(s)};
 var esc=function(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})};
 var slug=function(s){return String(s).toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"")};
+var MAS='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg>';
 var PLAY='<span class="play"><svg viewBox="0 0 10 10"><path d="M0 0L10 5L0 10Z"/></svg></span>';
 var data;
 
@@ -263,14 +275,16 @@ function render(){
   var cats=data.categorias||[];
   $("#tabs").innerHTML=cats.map(function(c){return'<a href="#'+slug(c.nombre)+'">'+esc(c.nombre)+"</a>"}).join("");
   porId={};
-  $("#menu").innerHTML=cats.map(function(c,ci){
+  var pide=!!waNum();
+  $("#menu").innerHTML=(pide?'<p class="tip"><i>'+MAS+"</i><span>Toca <b>+</b> en cada plato para armar tu pedido y envíalo por WhatsApp.</span></p>":"")+cats.map(function(c,ci){
     return'<section id="'+slug(c.nombre)+'"><h2 class="cat">'+esc(c.nombre)+"</h2>"+(c.platos||[]).map(function(p,pi){
       var pr=precio(p);
       if(!p.id)p.id="p"+ci+"-"+pi;
       porId[p.id]=p;
-      return'<button class="item'+(p.disponible===false?" off":"")+'" data-c="'+ci+'" data-p="'+pi+'"><span class="tx"><span class="row"><h3><span class="qn"></span>'+esc(p.nombre)+
+      return'<div class="item'+(p.disponible===false?" off":"")+'" data-c="'+ci+'" data-p="'+pi+'"><button class="abrir"><span class="tx"><span class="row"><h3><span class="qn"></span>'+esc(p.nombre)+
         (p.destacado?'<span class="badge">Recomendado</span>':"")+"</h3>"+(pr?'<span class="pr">'+esc(pr)+"</span>":"")+"</span>"+
-        (p.descripcion?"<p>"+esc(p.descripcion)+"</p>":"")+"</span>"+thumb(p)+"</button>";
+        (p.descripcion?"<p>"+esc(p.descripcion)+"</p>":"")+"</span>"+thumb(p)+"</button>"+
+        (pide&&p.disponible!==false?'<button class="mas" aria-label="Agregar '+esc(p.nombre)+' al pedido">'+MAS+"</button>":"")+"</div>";
     }).join("")+"</section>";
   }).join("");
 
@@ -291,11 +305,13 @@ function render(){
 function waNum(){return String(data.whatsapp||"").replace(/\D/g,"")}
 // api.whatsapp.com y no wa.me: la redirección de wa.me convierte los emojis en �
 function waLink(msg){return"https://api.whatsapp.com/send?phone="+waNum()+(msg?"&text="+encodeURIComponent(msg):"")}
+function waBoton(){return!!waNum()&&data.whatsapp_boton===true}
 function whatsapp(){
   if(!waNum())return;
+  document.body.classList.add("con-wa"); // espacio abajo para la barra del pedido
+  if(!waBoton())return; // el botón flotante se enciende o apaga desde el editor
   var g=$("#wa-g");
   $("#wa").hidden=false;
-  document.body.classList.add("con-wa");
   $("#wa-a").href=waLink(data.whatsapp_mensaje||"¡Hola "+data.restaurante+"! 👋 Vi el menú y quisiera pedir algo deli 😋");
   $("#wa-t").textContent=data.whatsapp_globo||"¿Se te antoja algo? 😋 ¡Escríbenos y pide aquí!";
   $("#wa-g b").textContent=data.restaurante||"";
@@ -328,7 +344,10 @@ function spy(){
 var sheet=$("#sheet"),gal=$("#s-g"),dots=$("#s-d");
 $("#menu").addEventListener("click",function(e){
   var b=e.target.closest(".item");if(!b)return;
-  open(data.categorias[b.dataset.c].platos[b.dataset.p]);
+  var p=data.categorias[b.dataset.c].platos[b.dataset.p],m=e.target.closest(".mas");
+  if(!m)return open(p);
+  sumar(p,1);
+  m.classList.remove("pop");void m.offsetWidth;m.classList.add("pop");
 });
 function open(p){
   var media=p.media||[];
@@ -391,12 +410,13 @@ function actualizar(){
   LS("menu-pedido",Object.keys(pedido).length?JSON.stringify(pedido):null);
   var ls=lineas(),n=ls.reduce(function(s,l){return s+l.q},0);
   bar.hidden=!n||!waNum();
-  $("#wa").hidden=!!n||!waNum(); // con pedido, el botón suelto de WhatsApp se oculta para que no manden un mensaje sin la orden
+  $("#wa").hidden=!!n||!waBoton(); // con pedido, el botón suelto de WhatsApp se oculta para que no manden un mensaje sin la orden
   $("#cb-n").textContent=n;
   $("#cb-t").textContent=n?fmt(total(ls)):"";
   document.querySelectorAll("#menu .item").forEach(function(b){
     var q=pedido[data.categorias[b.dataset.c].platos[b.dataset.p].id];
     b.querySelector(".qn").textContent=q?q+"×":"";
+    var m=b.querySelector(".mas");if(m)m.classList.toggle("en",!!q);
   });
 }
 
@@ -415,12 +435,15 @@ function pintarCant(){
 $("#s-menos").addEventListener("click",function(){if(cant>1){cant--;pintarCant()}});
 $("#s-mas").addEventListener("click",function(){if(cant<99){cant++;pintarCant()}});
 $("#s-ok").addEventListener("click",function(){
-  pedido[actual.id]=Math.min(99,(pedido[actual.id]||0)+cant);
-  actualizar();
   sheet.close();
-  avisar("✓ Agregado: "+cant+"× "+actual.nombre);
-  bar.classList.remove("bump");void bar.offsetWidth;bar.classList.add("bump");
+  sumar(actual,cant);
 });
+function sumar(p,q){
+  pedido[p.id]=Math.min(99,(pedido[p.id]||0)+q);
+  actualizar();
+  avisar("✓ Agregado: "+q+"× "+p.nombre);
+  bar.classList.remove("bump");void bar.offsetWidth;bar.classList.add("bump");
+}
 
 // Ventana "Tu pedido"
 bar.addEventListener("click",function(){
