@@ -213,7 +213,7 @@ function whatsapp(){
   var g=$("#wa-g");
   $("#wa").hidden=false;
   document.body.classList.add("con-wa");
-  $("#wa-a").href=waLink(data.whatsapp_mensaje||"¡Hola "+data.restaurante+"! 👋 Vi el menú y quisiera pedir algo rico 😋");
+  $("#wa-a").href=waLink(data.whatsapp_mensaje||"¡Hola "+data.restaurante+"! 👋 Vi el menú y quisiera pedir algo deli 😋");
   $("#wa-t").textContent=data.whatsapp_globo||"¿Se te antoja algo? 😋 ¡Escríbenos y pide aquí!";
   $("#wa-g b").textContent=data.restaurante||"";
   var visto=false;try{visto=sessionStorage.getItem("wa-globo")==="1"}catch(e){}
