@@ -8,10 +8,18 @@ Menú digital de **SABORA · Brunch & Coffee**, accesible por código QR.
 
 ## Rápido por diseño
 
-- Toda la página es un solo archivo (`index.html`, ~13 KB) más `menu.json` (~3 KB). No usa librerías ni fuentes externas.
+- Toda la página es un solo archivo (`index.html`, ~32 KB) más `menu.json` (~10 KB). No usa librerías ni fuentes externas.
 - Las fotos se comprimen automáticamente al subirlas (WebP/JPEG, máx. 1400 px) y se crea una miniatura de ~300 px para la lista.
 - Las imágenes de la lista cargan solo cuando aparecen en pantalla. Los videos solo se descargan al abrir el plato.
 - Optimizado para iPhone y Android: respeta el notch, el botón "atrás" de Android cierra la ficha del plato y los campos no hacen zoom.
+
+## Pedidos por WhatsApp
+
+- El cliente toca un plato, elige la cantidad y **Agregar**. Puede sumar varios platos; abajo aparece **Ver mi pedido** con el total.
+- En **Tu pedido** escribe su nombre y elige **En el local** (con mesa opcional) o **A domicilio** (con dirección y, si quiere, su ubicación GPS).
+- Si el local tiene ubicación guardada, el menú revisa dónde está el cliente: fuera del radio lo marca **A domicilio**, dentro lo marca **En el local**. El cliente puede cambiarlo.
+- **Enviar pedido por WhatsApp** abre WhatsApp con todo el pedido escrito: platos, cantidades, total, nombre y entrega.
+- Para guardar la ubicación del local: abre el editor **estando en el local** → *Información del restaurante* → **📍 Usar mi ubicación actual** → **Guardar cambios**. El radio (150 m por defecto) se cambia ahí mismo.
 
 ## Editar el menú desde el celular
 

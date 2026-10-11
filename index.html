@@ -17,6 +17,7 @@
   --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua","Noto Serif",Georgia,serif;
   --display:Didot,"Bodoni 72","Bodoni MT","Noto Serif Display",var(--serif);
   --script:"Snell Roundhand","Apple Chancery","Segoe Script","Brush Script MT",cursive;
+  --ui:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
 }
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%;text-size-adjust:100%;scroll-behavior:smooth;background:var(--paper)}
@@ -65,12 +66,12 @@ footer a{color:var(--green)}
 footer .logo{font-size:24px;margin-bottom:6px}
 
 /* Ficha del plato */
-#sheet{width:100%;max-width:560px;max-height:94dvh;margin:auto auto 0;padding:0;border:0;border-radius:22px 22px 0 0;
+#sheet,#cart{width:100%;max-width:560px;max-height:94dvh;margin:auto auto 0;padding:0;border:0;border-radius:22px 22px 0 0;
   background:var(--card);color:var(--ink);overflow:hidden}
-#sheet[open]{animation:up .28s cubic-bezier(.2,.8,.2,1)}
-#sheet::backdrop{background:rgba(25,25,20,.5)}
+#sheet[open],#cart[open]{animation:up .28s cubic-bezier(.2,.8,.2,1)}
+#sheet::backdrop,#cart::backdrop{background:rgba(25,25,20,.5)}
 @keyframes up{from{transform:translateY(60px);opacity:.4}}
-@media (min-width:700px){#sheet{margin:auto;border-radius:22px}}
+@media (min-width:700px){#sheet,#cart{margin:auto;border-radius:22px}}
 .sin{max-height:94dvh;overflow-y:auto;overscroll-behavior:contain;padding-bottom:env(safe-area-inset-bottom)}
 .x{position:absolute;top:12px;right:12px;z-index:2;display:grid;place-items:center;width:38px;height:38px;border:0;border-radius:50%;
   background:rgba(246,243,239,.92);color:var(--ink);font-size:24px;line-height:1;cursor:pointer;box-shadow:0 1px 6px rgba(0,0,0,.15)}
@@ -109,7 +110,52 @@ body.con-wa footer{padding-bottom:calc(110px + env(safe-area-inset-bottom))}
   color:#fff;font:600 17px system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;text-decoration:none}
 .wa-pedir svg{width:22px;height:22px;fill:#fff}
 .wa-pedir[hidden]{display:none}
-@media (prefers-reduced-motion:reduce){.wa-btn,.wa-btn::before,.wa-btn::after,.wa-globo{animation:none}}
+
+/* Pedido (carrito) */
+.qn{color:var(--green);margin-right:6px}
+.qn:empty{display:none}
+.add{display:flex;gap:10px;margin-top:22px}
+.add[hidden]{display:none}
+.qty{flex:none;display:flex;align-items:center;border:1px solid var(--line);border-radius:14px;background:#fff}
+.qty button{width:44px;height:50px;border:0;background:none;color:var(--green);font:600 24px/1 var(--ui);cursor:pointer;touch-action:manipulation}
+.qty span{min-width:22px;text-align:center;font:600 17px var(--ui)}
+.add-btn{flex:1;min-height:52px;border:0;border-radius:14px;background:var(--green);color:#fff;font:600 16.5px var(--ui);cursor:pointer;touch-action:manipulation}
+.cart-bar{position:fixed;left:calc(16px + env(safe-area-inset-left));right:calc(90px + env(safe-area-inset-right));bottom:calc(21px + env(safe-area-inset-bottom));z-index:20;
+  display:flex;align-items:center;gap:10px;max-width:520px;height:56px;padding:0 16px 0 10px;border:0;border-radius:16px;background:var(--green);color:#fff;
+  font:600 16px var(--ui);box-shadow:0 8px 22px rgba(0,0,0,.25);cursor:pointer;touch-action:manipulation}
+.cart-bar[hidden]{display:none}
+.cart-bar.bump{animation:bump .4s ease}
+@keyframes bump{40%{transform:scale(1.05)}}
+.cb-n{display:grid;place-items:center;min-width:30px;height:30px;padding:0 8px;border-radius:999px;background:#fff;color:var(--green);font-size:15px}
+.cb-t{margin-left:auto;white-space:nowrap}
+.lista{margin:14px 0 0;padding:0;list-style:none}
+.lista li{display:flex;align-items:center;gap:10px;padding:12px 0;border-bottom:1px solid var(--line)}
+.lista .nm{flex:1;min-width:0}
+.lista .nm b{display:block;font-size:16.5px;line-height:1.25}
+.lista .nm small{color:var(--muted);font-size:14px}
+.lista .qty button{width:36px;height:40px;font-size:21px}
+.lista .lt{min-width:62px;text-align:right;font-weight:700;white-space:nowrap}
+.tot{display:flex;justify-content:space-between;margin:14px 0 0;font-size:19px;font-weight:700}
+.tot b{color:var(--green)}
+.f .l{display:block;margin:18px 0 6px;color:var(--muted);font:600 13.5px var(--ui)}
+.f input,.f textarea{display:block;width:100%;padding:12px 13px;border:1px solid var(--line);border-radius:12px;background:#fff;color:var(--ink);font:16px var(--ui)}
+.f textarea{min-height:66px;resize:vertical}
+.f input:focus,.f textarea:focus{outline:2px solid var(--green);outline-offset:-1px;border-color:transparent}
+.seg{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.seg button,.ubic{min-height:50px;padding:8px;border:1px solid var(--line);border-radius:12px;background:#fff;color:var(--ink);font:600 15px var(--ui);cursor:pointer;touch-action:manipulation}
+.seg button[aria-pressed=true]{border-color:var(--green);background:var(--green);color:#fff}
+.ubic{width:100%;margin-top:8px;color:var(--green)}
+.ubic:disabled{opacity:.7;cursor:default}
+.geo{margin:8px 0 0;color:var(--muted);font:14px/1.4 var(--ui)}
+.geo:empty{display:none}
+.geo.err{color:#b42318}
+.f .wa-pedir{width:100%;border:0;cursor:pointer}
+.vaciar{display:block;margin:14px auto 0;padding:8px;border:0;background:none;color:var(--muted);font:14px var(--ui);text-decoration:underline;cursor:pointer}
+.toast{position:fixed;left:50%;bottom:calc(96px + env(safe-area-inset-bottom));z-index:30;max-width:calc(100vw - 32px);padding:11px 18px;border-radius:999px;
+  background:#1e1e1b;color:#fff;font:600 14.5px var(--ui);text-align:center;box-shadow:0 6px 20px rgba(0,0,0,.25);transform:translateX(-50%);animation:sube .3s ease}
+@keyframes sube{from{opacity:0;transform:translate(-50%,12px)}}
+.toast[hidden]{display:none}
+@media (prefers-reduced-motion:reduce){.wa-btn,.wa-btn::before,.wa-btn::after,.wa-globo,.cart-bar.bump,.toast{animation:none}}
 </style>
 </head>
 <body>
@@ -139,9 +185,10 @@ body.con-wa footer{padding-bottom:calc(110px + env(safe-area-inset-bottom))}
 <main id="menu"><p class="msg">Cargando menú…</p></main>
 <footer id="info"></footer>
 
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="wa-ico" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></symbol></svg>
 <div class="wa" id="wa" hidden>
   <div class="wa-globo" id="wa-g" hidden><button class="wa-x" id="wa-x" aria-label="Cerrar mensaje">&times;</button><b>SABORA</b><span id="wa-t"></span></div>
-  <a class="wa-btn" id="wa-a" target="_blank" rel="noopener" aria-label="Escríbenos por WhatsApp"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg></a>
+  <a class="wa-btn" id="wa-a" target="_blank" rel="noopener" aria-label="Escríbenos por WhatsApp"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#wa-ico"/></svg></a>
 </div>
 
 <dialog id="sheet" aria-labelledby="s-t">
@@ -149,7 +196,33 @@ body.con-wa footer{padding-bottom:calc(110px + env(safe-area-inset-bottom))}
     <button class="x" id="s-x" aria-label="Cerrar" autofocus>&times;</button>
     <div class="gal" id="s-g"></div>
     <div class="dots" id="s-d"></div>
-    <div class="sb"><h2 id="s-t"></h2><p id="s-p"></p><span class="pr" id="s-pr"></span><a class="wa-pedir" id="s-wa" target="_blank" rel="noopener" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>Pedir por WhatsApp</a></div>
+    <div class="sb"><h2 id="s-t"></h2><p id="s-p"></p><span class="pr" id="s-pr"></span><div class="add" id="s-add" hidden><span class="qty"><button type="button" id="s-menos" aria-label="Uno menos">−</button><span id="s-n">1</span><button type="button" id="s-mas" aria-label="Uno más">+</button></span><button type="button" class="add-btn" id="s-ok">Agregar al pedido</button></div></div>
+  </div>
+</dialog>
+
+<button class="cart-bar" id="cart-bar" hidden><span class="cb-n" id="cb-n">0</span><span>Ver mi pedido</span><span class="cb-t" id="cb-t"></span></button>
+<p class="toast" id="toast" role="status" hidden></p>
+
+<dialog id="cart" aria-labelledby="c-h">
+  <div class="sin" id="c-sin">
+    <button class="x" id="c-x" aria-label="Cerrar">&times;</button>
+    <form class="sb f" id="c-f" novalidate>
+      <h2 id="c-h">Tu pedido</h2>
+      <ul class="lista" id="c-lista"></ul>
+      <p class="tot"><span>Total</span><b id="c-tot"></b></p>
+      <p class="geo" id="c-sp" hidden>Algunos precios te los confirmamos por WhatsApp.</p>
+      <label class="l" for="c-nom">Tu nombre</label>
+      <input type="text" id="c-nom" autocomplete="name" placeholder="¿A nombre de quién va el pedido?" maxlength="60">
+      <span class="l">¿Cómo lo quieres?</span>
+      <div class="seg" id="c-tipo"><button type="button" data-t="local" aria-pressed="false">🍽️ En el local</button><button type="button" data-t="domicilio" aria-pressed="false">🛵 A domicilio</button></div>
+      <p class="geo" id="c-geo"></p>
+      <div id="c-loc" hidden><label class="l" for="c-mesa">Mesa (opcional)</label><input type="text" id="c-mesa" maxlength="10" placeholder="Ej. 4"></div>
+      <div id="c-dom" hidden><label class="l" for="c-dir">Dirección o punto de referencia</label><textarea id="c-dir" autocomplete="street-address" maxlength="300" placeholder="Colonia, calle, casa, color del portón…"></textarea><button type="button" class="ubic" id="c-ubic">📍 Enviar mi ubicación GPS</button></div>
+      <label class="l" for="c-nota">Nota (opcional)</label>
+      <input type="text" id="c-nota" maxlength="200" placeholder="Ej. sin cebolla, poco hielo">
+      <button type="submit" class="wa-pedir"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#wa-ico"/></svg>Enviar pedido por WhatsApp</button>
+      <button type="button" class="vaciar" id="c-vaciar">Vaciar pedido</button>
+    </form>
   </div>
 </dialog>
 
@@ -165,11 +238,11 @@ window.__menu.then(function(d){data=d;render()}).catch(function(){
   $("#menu").innerHTML='<p class="msg">No se pudo cargar el menú. Revisa tu conexión e intenta de nuevo.</p>';
 });
 
+function fmt(n){return(data.moneda?data.moneda+" ":"")+(Number.isInteger(n)?n:n.toFixed(2))}
 function precio(p){
   if(p.disponible===false)return"Agotado";
   var n=parseFloat(p.precio);
-  if(!isFinite(n))return"";
-  return(data.moneda?data.moneda+" ":"")+(Number.isInteger(n)?n:n.toFixed(2));
+  return isFinite(n)?fmt(n):"";
 }
 function thumb(p){
   var m=(p.media||[])[0];
@@ -184,10 +257,13 @@ function render(){
   $("#sub").textContent=data.eslogan||"";
   var cats=data.categorias||[];
   $("#tabs").innerHTML=cats.map(function(c){return'<a href="#'+slug(c.nombre)+'">'+esc(c.nombre)+"</a>"}).join("");
+  porId={};
   $("#menu").innerHTML=cats.map(function(c,ci){
     return'<section id="'+slug(c.nombre)+'"><h2 class="cat">'+esc(c.nombre)+"</h2>"+(c.platos||[]).map(function(p,pi){
       var pr=precio(p);
-      return'<button class="item'+(p.disponible===false?" off":"")+'" data-c="'+ci+'" data-p="'+pi+'"><span class="tx"><span class="row"><h3>'+esc(p.nombre)+
+      if(!p.id)p.id="p"+ci+"-"+pi;
+      porId[p.id]=p;
+      return'<button class="item'+(p.disponible===false?" off":"")+'" data-c="'+ci+'" data-p="'+pi+'"><span class="tx"><span class="row"><h3><span class="qn"></span>'+esc(p.nombre)+
         (p.destacado?'<span class="badge">Recomendado</span>':"")+"</h3>"+(pr?'<span class="pr">'+esc(pr)+"</span>":"")+"</span>"+
         (p.descripcion?"<p>"+esc(p.descripcion)+"</p>":"")+"</span>"+thumb(p)+"</button>";
     }).join("")+"</section>";
@@ -203,6 +279,7 @@ function render(){
 
   spy();
   whatsapp();
+  cargarPedido();
 }
 
 // Botón flotante de WhatsApp
@@ -260,9 +337,8 @@ function open(p){
   $("#s-t").innerHTML=esc(p.nombre)+(p.destacado?' <span class="badge">Recomendado</span>':"");
   $("#s-p").textContent=p.descripcion||"";
   $("#s-pr").textContent=precio(p);
-  var w=$("#s-wa"),pr=precio(p);
-  w.hidden=!waNum()||p.disponible===false;
-  if(!w.hidden)w.href=waLink("¡Hola "+data.restaurante+"! 👋 Quisiera pedir: "+p.nombre+(pr?" ("+pr+")":""));
+  actual=p;cant=1;pintarCant();
+  $("#s-add").hidden=!waNum()||p.disponible===false;
   $("#sin").scrollTop=0;
   sheet.showModal();
   var v=gal.firstElementChild;
@@ -280,8 +356,180 @@ sheet.addEventListener("close",function(){
   gal.innerHTML="";
   if(history.state&&history.state.sheet)history.back();
 });
-// Botón "atrás" de Android / gesto de iPhone cierra la ficha
-addEventListener("popstate",function(){if(sheet.open)sheet.close()});
+// Botón "atrás" de Android / gesto de iPhone cierra la ficha y el pedido
+addEventListener("popstate",function(){if(sheet.open)sheet.close();if(cart.open)cart.close()});
+
+// ===== Pedido (carrito): varios platos en un solo mensaje de WhatsApp =====
+var porId={};       // id del plato -> plato
+var pedido={};      // id del plato -> cantidad
+var actual=null,cant=1;
+var cliente=null;   // ubicación GPS del cliente {lat,lng,acc}
+var tipo="",tipoManual=false,buscando=false;
+var cart=$("#cart"),bar=$("#cart-bar");
+var LS=function(k,v){try{if(v===undefined)return localStorage.getItem(k);if(v===null)localStorage.removeItem(k);else localStorage.setItem(k,v)}catch(e){}};
+
+function lineas(){
+  return Object.keys(pedido).map(function(id){
+    var p=porId[id],n=parseFloat(p.precio);
+    return{p:p,q:pedido[id],n:isFinite(n)?n:null};
+  });
+}
+function total(ls){return ls.reduce(function(s,l){return s+(l.n==null?0:l.n*l.q)},0)}
+
+function cargarPedido(){
+  var g={};try{g=JSON.parse(LS("menu-pedido")||"{}")}catch(e){}
+  pedido={};
+  for(var id in g){var p=porId[id];if(p&&p.disponible!==false&&g[id]>0)pedido[id]=Math.min(99,g[id]|0)}
+  actualizar();
+}
+function actualizar(){
+  LS("menu-pedido",Object.keys(pedido).length?JSON.stringify(pedido):null);
+  var ls=lineas(),n=ls.reduce(function(s,l){return s+l.q},0);
+  bar.hidden=!n||!waNum();
+  $("#cb-n").textContent=n;
+  $("#cb-t").textContent=n?fmt(total(ls)):"";
+  document.querySelectorAll("#menu .item").forEach(function(b){
+    var q=pedido[data.categorias[b.dataset.c].platos[b.dataset.p].id];
+    b.querySelector(".qn").textContent=q?q+"×":"";
+  });
+}
+
+var toastT;
+function avisar(t){
+  var e=$("#toast");e.textContent=t;e.hidden=false;
+  clearTimeout(toastT);toastT=setTimeout(function(){e.hidden=true},2600);
+}
+
+// Cantidad y "Agregar" en la ficha del plato
+function pintarCant(){
+  var n=parseFloat(actual.precio);
+  $("#s-n").textContent=cant;
+  $("#s-ok").textContent=isFinite(n)?"Agregar · "+fmt(n*cant):"Agregar al pedido";
+}
+$("#s-menos").addEventListener("click",function(){if(cant>1){cant--;pintarCant()}});
+$("#s-mas").addEventListener("click",function(){if(cant<99){cant++;pintarCant()}});
+$("#s-ok").addEventListener("click",function(){
+  pedido[actual.id]=Math.min(99,(pedido[actual.id]||0)+cant);
+  actualizar();
+  sheet.close();
+  avisar("✓ Agregado: "+cant+"× "+actual.nombre);
+  bar.classList.remove("bump");void bar.offsetWidth;bar.classList.add("bump");
+});
+
+// Ventana "Tu pedido"
+bar.addEventListener("click",function(){
+  pintarPedido();
+  var nom=$("#c-nom"),dir=$("#c-dir");
+  if(!nom.value)nom.value=LS("menu-nombre")||"";
+  if(!dir.value)dir.value=LS("menu-direccion")||"";
+  $("#c-sin").scrollTop=0;
+  cart.showModal();
+  history.pushState({sheet:1},"");
+  if(hayLocal())ubicar();
+});
+function pintarPedido(){
+  var ls=lineas();
+  if(!ls.length){if(cart.open)cart.close();return}
+  $("#c-lista").innerHTML=ls.map(function(l){
+    return'<li data-id="'+esc(l.p.id)+'"><span class="nm"><b>'+esc(l.p.nombre)+"</b><small>"+(l.n==null?"Precio por confirmar":esc(fmt(l.n))+" c/u")+
+      '</small></span><span class="qty"><button type="button" data-d="-1" aria-label="Uno menos">−</button><span>'+l.q+
+      '</span><button type="button" data-d="1" aria-label="Uno más">+</button></span><span class="lt">'+(l.n==null?"—":esc(fmt(l.n*l.q)))+"</span></li>";
+  }).join("");
+  $("#c-tot").textContent=fmt(total(ls));
+  $("#c-sp").hidden=!ls.some(function(l){return l.n==null});
+}
+$("#c-lista").addEventListener("click",function(e){
+  var b=e.target.closest("button[data-d]");if(!b)return;
+  var id=b.closest("li").dataset.id,q=(pedido[id]||0)+(+b.dataset.d);
+  if(q>0)pedido[id]=Math.min(99,q);else delete pedido[id];
+  actualizar();pintarPedido();
+});
+$("#c-x").addEventListener("click",function(){cart.close()});
+cart.addEventListener("click",function(e){if(e.target===cart)cart.close()});
+cart.addEventListener("close",function(){if(history.state&&history.state.sheet)history.back()});
+$("#c-vaciar").addEventListener("click",function(){
+  if(!confirm("¿Vaciar todo el pedido?"))return;
+  pedido={};actualizar();cart.close();
+});
+
+// En el local o a domicilio
+function ponerTipo(t){
+  tipo=t;
+  [].forEach.call($("#c-tipo").children,function(b){b.setAttribute("aria-pressed",b.dataset.t===t)});
+  $("#c-loc").hidden=t!=="local";
+  $("#c-dom").hidden=t!=="domicilio";
+}
+$("#c-tipo").addEventListener("click",function(e){
+  var b=e.target.closest("button");if(!b)return;
+  tipoManual=true;ponerTipo(b.dataset.t);geoMsg(geoTxt);
+});
+
+// Ubicación: si el cliente está fuera del radio del local, el pedido es a domicilio
+var geoTxt="";
+function geoMsg(t,err){var e=$("#c-geo");e.textContent=t||"";e.classList.toggle("err",!!err)}
+function hayLocal(){return isFinite(parseFloat(data.local_lat))&&isFinite(parseFloat(data.local_lng))}
+function metros(a,b,c,d){
+  var r=Math.PI/180,x=Math.sin((c-a)*r/2),y=Math.sin((d-b)*r/2);
+  return 12742000*Math.asin(Math.sqrt(x*x+Math.cos(a*r)*Math.cos(c*r)*y*y));
+}
+function ubicar(){
+  if(cliente)return evaluar();
+  if(buscando)return;
+  if(!navigator.geolocation)return geoMsg("Tu teléfono no permite compartir la ubicación. Elige cómo quieres tu pedido.");
+  buscando=true;
+  geoMsg("📍 Revisando tu ubicación…");
+  navigator.geolocation.getCurrentPosition(function(pos){
+    buscando=false;
+    cliente={lat:pos.coords.latitude,lng:pos.coords.longitude,acc:pos.coords.accuracy||0};
+    evaluar();
+  },function(){
+    buscando=false;
+    geoTxt="No pudimos ver tu ubicación. Elige cómo quieres tu pedido.";
+    geoMsg(geoTxt);
+  },{enableHighAccuracy:true,timeout:12000,maximumAge:120000});
+}
+function evaluar(){
+  var u=$("#c-ubic");u.textContent="📍 Ubicación GPS agregada ✓";u.disabled=true;
+  if(!hayLocal()){geoTxt="";geoMsg("");return}
+  var d=metros(cliente.lat,cliente.lng,+data.local_lat,+data.local_lng);
+  var dentro=d<=(parseFloat(data.radio_local_m)||150)+Math.min(cliente.acc,50);
+  if(!tipoManual)ponerTipo(dentro?"local":"domicilio");
+  geoTxt=dentro?"📍 Estás en "+data.restaurante+", así que lo marcamos para el local."
+    :"📍 Estás a "+(d<1000?Math.round(d/10)*10+" m":Math.round(d/100)/10+" km")+" de "+data.restaurante+", así que lo marcamos a domicilio.";
+  geoMsg(geoTxt);
+}
+$("#c-ubic").addEventListener("click",ubicar);
+
+// Enviar el pedido completo por WhatsApp
+function falta(el,t){
+  el.setCustomValidity(t);el.reportValidity();el.focus();
+}
+["#c-nom","#c-dir"].forEach(function(s){$(s).addEventListener("input",function(){this.setCustomValidity("")})});
+$("#c-f").addEventListener("submit",function(e){
+  e.preventDefault();
+  var ls=lineas();if(!ls.length)return;
+  var nom=$("#c-nom").value.trim(),dir=$("#c-dir").value.trim(),mesa=$("#c-mesa").value.trim(),nota=$("#c-nota").value.trim();
+  if(!nom)return falta($("#c-nom"),"Escribe tu nombre para el pedido.");
+  if(!tipo){geoMsg("Elige si es para el local o a domicilio.",true);$("#c-tipo").scrollIntoView({block:"center",behavior:"smooth"});return}
+  if(tipo==="domicilio"&&!dir)return falta($("#c-dir"),"Escribe tu dirección o un punto de referencia.");
+  var m=["¡Hola "+data.restaurante+"! 👋 Quiero hacer un pedido:",""];
+  ls.forEach(function(l){m.push("• "+l.q+"× "+l.p.nombre+(l.n==null?" (precio por confirmar)":" — "+fmt(l.n*l.q)))});
+  m.push("","*Total: "+fmt(total(ls))+"*"+($("#c-sp").hidden?"":" + precios por confirmar"),"");
+  m.push("👤 Nombre: "+nom);
+  if(tipo==="local")m.push("🍽️ Para el local"+(mesa?" · Mesa "+mesa:""));
+  else{
+    m.push("🛵 A domicilio","📍 Dirección: "+dir);
+    if(cliente)m.push("🗺️ Ubicación: https://maps.google.com/?q="+cliente.lat.toFixed(6)+","+cliente.lng.toFixed(6));
+  }
+  if(nota)m.push("📝 Nota: "+nota);
+  LS("menu-nombre",nom);
+  if(dir)LS("menu-direccion",dir);
+  window.open(waLink(m.join("\n")),"_blank","noopener");
+  pedido={};actualizar();
+  $("#c-nota").value="";
+  cart.close();
+  avisar("¡Listo! Solo toca enviar en WhatsApp 😋");
+});
 if("serviceWorker"in navigator)addEventListener("load",function(){navigator.serviceWorker.register("sw.js").catch(function(){})});
 })();
 </script>

@@ -269,8 +269,27 @@ function campo(label, obj, key, opts){
   return h("div", {}, h("label", {}, label), el);
 }
 
+function num(v){ var n = parseFloat(String(v).replace(",", ".")); return isFinite(n) ? n : null; }
+
+// Guarda la ubicación del local (hay que estar en el local al tocar el botón)
+function ubicarLocal(){
+  if (!navigator.geolocation) { estado("Este dispositivo no permite obtener la ubicación.", "err"); return; }
+  estado("📍 Obteniendo la ubicación…");
+  navigator.geolocation.getCurrentPosition(function(pos){
+    menu.local_lat = +pos.coords.latitude.toFixed(6);
+    menu.local_lng = +pos.coords.longitude.toFixed(6);
+    if (!menu.radio_local_m) menu.radio_local_m = 150;
+    marcar(); render();
+    estado("📍 Ubicación del local lista (precisión ±" + Math.round(pos.coords.accuracy) + " m). Toca Guardar cambios.", "ok");
+  }, function(e){
+    estado("No se pudo obtener la ubicación: " + (e.code === 1 ? "permiso denegado. Actívalo en los ajustes del navegador." : e.message), "err");
+  }, { enableHighAccuracy: true, timeout: 20000, maximumAge: 0 });
+}
+
+var infoAbierta = false;
 function vistaInfo(){
-  return h("details", { class: "card", open: !menu.categorias.length },
+  var hayLocal = menu.local_lat != null && menu.local_lng != null;
+  return h("details", { class: "card", open: infoAbierta || !menu.categorias.length, ontoggle: function(e){ infoAbierta = e.target.open; } },
     h("summary", { style: "padding:0" }, h("h2", { style: "margin:0;flex:1" }, "Información del restaurante")),
     campo("Nombre", menu, "restaurante"),
     campo("Eslogan", menu, "eslogan", { ph: "Brunch & Coffee" }),
@@ -289,7 +308,17 @@ function vistaInfo(){
       var n = String(menu.whatsapp || "").replace(/\D/g, "");
       if (!n) { alert("Primero escribe el número de WhatsApp."); return; }
       window.open("https://api.whatsapp.com/send?phone=" + n + "&text=" + encodeURIComponent(menu.whatsapp_mensaje || ""), "_blank", "noopener");
-    }}, "Probar en WhatsApp ↗")
+    }}, "Probar en WhatsApp ↗"),
+    h("h2", { style: "margin:22px 0 0" }, "Pedidos: en el local o a domicilio"),
+    h("p", { class: "muted", style: "margin:4px 0 0" }, "Los clientes arman su pedido con varios platos y te lo mandan por WhatsApp. Si el cliente está más lejos del local que el radio, el pedido se marca «A domicilio»; si está dentro, «En el local»."),
+    h("div", { class: "row" },
+      h("button", { class: "pri", onclick: ubicarLocal }, hayLocal ? "📍 Volver a tomar la ubicación" : "📍 Usar mi ubicación actual (estando en el local)"),
+      hayLocal ? h("a", { class: "btn", href: "https://maps.google.com/?q=" + menu.local_lat + "," + menu.local_lng, target: "_blank", rel: "noopener" }, "Ver en el mapa ↗") : null),
+    h("div", { class: "grid2" },
+      campo("Latitud", menu, "local_lat", { ph: "14.0723", parse: num }),
+      campo("Longitud", menu, "local_lng", { ph: "-87.1921", parse: num })),
+    campo("Radio del local (metros)", menu, "radio_local_m", { inputmode: "numeric", ph: "150", parse: num }),
+    hayLocal ? null : h("p", { class: "muted", style: "margin:6px 0 0;color:#b54708" }, "Sin ubicación del local: el cliente elige a mano si es en el local o a domicilio.")
   );
 }
 
