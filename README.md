@@ -24,6 +24,7 @@ Menú digital de **SABORA · Brunch & Coffee**, accesible por código QR.
   - **A domicilio:** nombre y dirección obligatorios; si quiere, agrega su ubicación GPS.
 - Si el local tiene ubicación guardada, el menú revisa dónde está el cliente: fuera del radio lo marca **A domicilio**, dentro lo marca **En el local**. El cliente puede cambiarlo.
 - **Enviar pedido por WhatsApp** abre WhatsApp con todo el pedido escrito: platos, cantidades, total, nombre y entrega.
+- **Horario de pedidos:** de 8:00 a. m. a 7:00 p. m., hora de Honduras (sin importar la hora del teléfono del cliente). Fuera de ese horario el menú se puede ver, pero no se pueden armar ni enviar pedidos; el pedido que el cliente ya tenía queda guardado para cuando abran. Se cambia en el editor → *Información del restaurante* → *Horario de pedidos* (vacío = pedidos a toda hora).
 - Para guardar la ubicación del local: abre el editor **estando en el local** → *Información del restaurante* → **📍 Usar mi ubicación actual** → **Guardar cambios**. El radio (150 m por defecto) se cambia ahí mismo.
 
 ## Editar el menú desde el celular

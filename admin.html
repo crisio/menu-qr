@@ -25,7 +25,7 @@ main{max-width:720px;margin:0 auto;padding:14px 12px calc(100px + env(safe-area-
 .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:14px}
 h2{margin:0 0 10px;font-size:18px}
 label{display:block;margin:10px 0 4px;color:var(--muted);font-size:13px;font-weight:600}
-input[type=text],input[type=password],textarea,select{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:10px;background:#fff;color:var(--ink);font:inherit;font-size:16px}
+input[type=text],input[type=password],input[type=time],textarea,select{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:10px;background:#fff;color:var(--ink);font:inherit;font-size:16px}
 textarea{resize:vertical;min-height:72px}
 input:focus,textarea:focus,select:focus{outline:2px solid var(--green);outline-offset:-1px;border-color:transparent}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:0 10px}
@@ -263,7 +263,7 @@ function render(){
 function campo(label, obj, key, opts){
   opts = opts || {};
   var tag = opts.area ? "textarea" : "input";
-  var el = h(tag, { type: opts.area ? null : "text", value: obj[key] == null ? "" : String(obj[key]), placeholder: opts.ph || "",
+  var el = h(tag, { type: opts.area ? null : (opts.type || "text"), value: obj[key] == null ? "" : String(obj[key]), placeholder: opts.ph || "",
     inputmode: opts.inputmode || null, rows: opts.area ? 3 : null,
     oninput: function(){ obj[key] = opts.parse ? opts.parse(el.value) : el.value; marcar(); if (opts.onchange) opts.onchange(); } });
   return h("div", {}, h("label", {}, label), el);
@@ -316,6 +316,11 @@ function vistaInfo(){
         window.open("https://api.whatsapp.com/send?phone=" + n + "&text=" + encodeURIComponent(menu.whatsapp_mensaje || ""), "_blank", "noopener");
       }}, "Probar en WhatsApp ↗")
     ] : null,
+    h("h2", { style: "margin:22px 0 0" }, "Horario de pedidos"),
+    h("p", { class: "muted", style: "margin:4px 0 0" }, "Hora de Honduras. Fuera de este horario el menú se puede ver, pero no se pueden armar ni enviar pedidos. Si dejas los dos vacíos, se reciben pedidos a toda hora."),
+    h("div", { class: "grid2" },
+      campo("Desde", menu, "pedidos_desde", { type: "time", ph: "08:00" }),
+      campo("Hasta", menu, "pedidos_hasta", { type: "time", ph: "19:00" })),
     h("h2", { style: "margin:22px 0 0" }, "Pedidos: en el local o a domicilio"),
     h("p", { class: "muted", style: "margin:4px 0 0" }, "Los clientes arman su pedido con varios platos y te lo mandan por WhatsApp. Si el cliente está más lejos del local que el radio, el pedido se marca «A domicilio»; si está dentro, «En el local»."),
     h("div", { class: "row" },

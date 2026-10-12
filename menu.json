@@ -9,6 +9,8 @@
   "whatsapp": "+50498105235",
   "whatsapp_globo": "¿Se te antoja algo? 😋 ¡Escríbenos y pide aquí!",
   "whatsapp_mensaje": "¡Hola SABORA! 👋 Vi el menú y quisiera pedir algo deli 😋",
+  "pedidos_desde": "08:00",
+  "pedidos_hasta": "19:00",
   "categorias": [
     {
       "nombre": "Desayunos",
