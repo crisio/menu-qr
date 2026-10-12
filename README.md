@@ -16,7 +16,7 @@ Menú digital de **SABORA · Brunch & Coffee**, accesible por código QR.
 ## Pedidos por WhatsApp
 
 - Cada plato tiene un botón **+** que lo agrega al pedido con un toque (se pone verde cuando ya está en el pedido). Tocando el plato se abre su ficha con fotos y cantidad. Abajo aparece **Ver mi pedido** con el total.
-- Para quitar un plato del pedido, se **desliza a la derecha** (en la lista del menú o en *Tu pedido*). Sale un aviso con **Deshacer** por si fue sin querer.
+- Para quitar un plato del pedido: se **desliza a la derecha** (en la lista del menú o en *Tu pedido*), o se abre el plato y se toca **🗑 Quitar del pedido**. Sale un aviso con **Deshacer** por si fue sin querer.
 - El botón flotante de WhatsApp viene **apagado** para que pidan con **+** y te llegue la orden completa. Se enciende o apaga en el editor → *Información del restaurante* → *WhatsApp*.
 - Si el botón flotante está encendido, se oculta mientras haya algo en el pedido, para que el pedido siempre salga con la orden completa.
 - En **Tu pedido** elige **En el local** o **A domicilio**:
