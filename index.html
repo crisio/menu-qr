@@ -52,7 +52,7 @@ section{scroll-margin-top:62px;padding-top:22px}
 .abrir{display:flex;align-items:center;gap:14px;flex:1;min-width:0;padding:16px 4px;border:0;
   background:none;color:inherit;font:inherit;text-align:left;cursor:pointer;touch-action:manipulation}
 .abrir:active{background:rgba(47,95,53,.07)}
-.mas{flex:none;display:grid;place-items:center;width:42px;height:42px;margin-right:2px;padding:0;border:1.5px solid var(--green);border-radius:50%;
+.mas{flex:none;display:grid;place-items:center;width:42px;height:42px;margin-right:5px;padding:0;border:1.5px solid var(--green);border-radius:50%;
   background:#fff;color:var(--green);box-shadow:0 1px 4px rgba(0,0,0,.08);cursor:pointer;touch-action:manipulation}
 .mas svg{width:20px;height:20px}
 .mas.en{background:var(--green);color:#fff}
@@ -171,6 +171,15 @@ body.con-wa footer{padding-bottom:calc(110px + var(--abajo))}
   background:#1e1e1b;color:#fff;font:600 14.5px var(--ui);text-align:center;box-shadow:0 6px 20px rgba(0,0,0,.25);transform:translateX(-50%);animation:sube .3s ease}
 @keyframes sube{from{opacity:0;transform:translate(-50%,12px)}}
 .toast[hidden]{display:none}
+.toast{pointer-events:none;display:flex;align-items:center;justify-content:center;width:max-content} /* no tapa los platos de abajo; solo "Deshacer" se puede tocar */
+.toast button{pointer-events:auto;margin-left:14px;padding:4px 2px;border:0;background:none;color:#9fdcaa;font:700 14.5px var(--ui);text-decoration:underline;cursor:pointer}
+/* Deslizar a la derecha para quitar un plato del pedido */
+.item,.lista li{position:relative;overflow:hidden;touch-action:pan-y pinch-zoom}
+.item>*,.lista li>*{transform:translateX(var(--dx,0px));transition:transform .2s ease}
+.arrastra>*{transition:none}
+.arrastra,.sale{background:#f9e3e0}
+.arrastra::before,.sale::before{content:"🗑 Quitar";position:absolute;left:12px;top:50%;transform:translateY(-50%);color:#b42318;font:600 14px var(--ui);opacity:.5}
+.borra::before,.sale::before{opacity:1}
 @media (prefers-reduced-motion:reduce){.wa-btn,.wa-btn::before,.wa-btn::after,.wa-globo,.cart-bar.bump,.toast,.mas.pop{animation:none}}
 </style>
 </head>
@@ -226,6 +235,7 @@ body.con-wa footer{padding-bottom:calc(110px + var(--abajo))}
       <h2 id="c-h">Tu pedido</h2>
       <ul class="lista" id="c-lista"></ul>
       <p class="tot"><span>Total</span><b id="c-tot"></b></p>
+      <p class="geo">Desliza un plato a la derecha para quitarlo.</p>
       <p class="geo" id="c-sp" hidden>Algunos precios te los confirmamos por WhatsApp.</p>
       <span class="l">¿Cómo lo quieres?</span>
       <div class="seg" id="c-tipo"><button type="button" data-t="local" aria-pressed="false">🍽️ En el local</button><button type="button" data-t="domicilio" aria-pressed="false">🛵 A domicilio</button></div>
@@ -343,6 +353,7 @@ function spy(){
 // Ficha del plato
 var sheet=$("#sheet"),gal=$("#s-g"),dots=$("#s-d");
 $("#menu").addEventListener("click",function(e){
+  if(Date.now()-movido<400)return;
   var b=e.target.closest(".item");if(!b)return;
   var p=data.categorias[b.dataset.c].platos[b.dataset.p],m=e.target.closest(".mas");
   if(!m)return open(p);
@@ -421,9 +432,17 @@ function actualizar(){
 }
 
 var toastT;
-function avisar(t){
-  var e=$("#toast");e.textContent=t;e.hidden=false;
-  clearTimeout(toastT);toastT=setTimeout(function(){e.hidden=true},2600);
+function avisar(t,deshacer){
+  var e=$("#toast");
+  (cart.open?cart:document.body).appendChild(e);
+  e.textContent=t;
+  if(deshacer){
+    var b=document.createElement("button");b.type="button";b.textContent="Deshacer";
+    b.addEventListener("click",function(){e.hidden=true;deshacer()});
+    e.appendChild(b);
+  }
+  e.hidden=false;
+  clearTimeout(toastT);toastT=setTimeout(function(){e.hidden=true},deshacer?5000:2600);
 }
 
 // Cantidad y "Agregar" en la ficha del plato
@@ -468,6 +487,7 @@ function pintarPedido(){
   $("#c-sp").hidden=!ls.some(function(l){return l.n==null});
 }
 $("#c-lista").addEventListener("click",function(e){
+  if(Date.now()-movido<400)return;
   var b=e.target.closest("button[data-d]");if(!b)return;
   var id=b.closest("li").dataset.id,q=(pedido[id]||0)+(+b.dataset.d);
   if(q>0)pedido[id]=Math.min(99,q);else delete pedido[id];
@@ -480,6 +500,56 @@ $("#c-vaciar").addEventListener("click",function(){
   if(!confirm("¿Vaciar todo el pedido?"))return;
   pedido={};actualizar();cart.close();
 });
+
+// Deslizar a la derecha quita el plato del pedido (en el menú y en "Tu pedido")
+var movido=0;
+function quitar(id){
+  var q=pedido[id],p=porId[id];if(!q)return;
+  delete pedido[id];
+  actualizar();
+  if(cart.open)pintarPedido();
+  avisar("Quitaste "+q+"× "+p.nombre,function(){pedido[id]=q;actualizar();if(cart.open)pintarPedido()});
+}
+function deslizable(cont,sel,idDe,saleEntero){
+  var el=null,id,x0,y0,dx=0,moviendo=false;
+  var limite=function(t){return Math.min(110,t.offsetWidth*.3)};
+  cont.addEventListener("touchstart",function(e){
+    el=null;
+    if(e.touches.length!==1)return;
+    var t=e.target.closest(sel);if(!t)return;
+    id=idDe(t);if(!pedido[id])return;
+    el=t;x0=e.touches[0].clientX;y0=e.touches[0].clientY;dx=0;moviendo=false;
+  },{passive:true});
+  cont.addEventListener("touchmove",function(e){
+    if(!el)return;
+    var mx=e.touches[0].clientX-x0,my=e.touches[0].clientY-y0;
+    if(!moviendo){
+      if(Math.abs(my)>=8&&Math.abs(my)>=Math.abs(mx)){el=null;return} // se está desplazando hacia arriba o abajo
+      if(mx<8||mx<Math.abs(my)*1.2)return;
+      moviendo=true;el.classList.add("arrastra");
+    }
+    if(e.cancelable)e.preventDefault(); // que el navegador no lo tome como desplazamiento ni como "atrás"
+    dx=Math.max(0,mx);
+    el.style.setProperty("--dx",dx+"px");
+    el.classList.toggle("borra",dx>limite(el));
+  },{passive:false});
+  function fin(e){
+    if(!el)return;
+    var t=el;el=null;
+    if(!moviendo)return;
+    movido=Date.now();
+    var borra=e.type==="touchend"&&dx>limite(t);
+    t.classList.remove("arrastra","borra");
+    if(!borra)return t.style.removeProperty("--dx");
+    if(!saleEntero){t.style.removeProperty("--dx");return quitar(id)}
+    t.classList.add("sale");t.style.setProperty("--dx",t.offsetWidth+"px");
+    setTimeout(function(){quitar(id)},180);
+  }
+  cont.addEventListener("touchend",fin);
+  cont.addEventListener("touchcancel",fin);
+}
+deslizable($("#menu"),".item",function(t){return data.categorias[t.dataset.c].platos[t.dataset.p].id},false);
+deslizable($("#c-lista"),"li",function(t){return t.dataset.id},true);
 
 // En el local o a domicilio
 function ponerTipo(t){
