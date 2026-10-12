@@ -80,6 +80,7 @@ footer{max-width:680px;margin:0 auto;padding:28px 24px calc(36px + env(safe-area
 footer p{margin:4px 0}
 footer a{color:var(--green)}
 footer .logo{font-size:24px;margin-bottom:6px}
+footer .aviso{margin-top:14px;font-size:12px;opacity:.75}
 
 /* Ficha del plato */
 #sheet,#cart{width:100%;max-width:560px;max-height:94dvh;margin:auto auto 0;padding:0;border:0;border-radius:22px 22px 0 0;
@@ -174,7 +175,7 @@ body.con-wa footer{padding-bottom:calc(110px + var(--abajo))}
 .toast{pointer-events:none;display:flex;align-items:center;justify-content:center;width:max-content} /* no tapa los platos de abajo; solo "Deshacer" se puede tocar */
 .toast button{pointer-events:auto;margin-left:14px;padding:4px 2px;border:0;background:none;color:#9fdcaa;font:700 14.5px var(--ui);text-decoration:underline;cursor:pointer}
 /* Deslizar a la derecha para quitar un plato del pedido */
-.item,.lista li{position:relative;overflow:hidden;touch-action:pan-y pinch-zoom}
+.item,.lista li{position:relative;overflow:hidden;touch-action:pan-y;touch-action:pan-y pinch-zoom}
 .item>*,.lista li>*{transform:translateX(var(--dx,0px));transition:transform .2s ease}
 .arrastra>*{transition:none}
 .arrastra,.sale{background:linear-gradient(90deg,#f9e3e0 var(--dx,0px),transparent var(--dx,0px))}
@@ -303,12 +304,14 @@ function render(){
   }).join("");
 
   var tel=(data.telefono||"").replace(/[^\d+]/g,"");
+  var actualizado=new Date(document.lastModified); // fecha de publicación de esta página (sirve para saber si el teléfono ya tiene la última versión)
   var ig=(data.instagram||"").replace(/^@/,"");
   $("#info").innerHTML='<p class="logo">'+esc(data.restaurante)+"</p>"+
     (data.direccion?"<p>"+esc(data.direccion)+"</p>":"")+
     (data.horario?"<p>"+esc(data.horario)+"</p>":"")+
     (tel?'<p><a href="tel:'+esc(tel)+'">'+esc(data.telefono)+"</a></p>":"")+
-    (ig?'<p><a href="https://instagram.com/'+esc(ig)+'" rel="noopener">@'+esc(ig)+"</a></p>":"");
+    (ig?'<p><a href="https://instagram.com/'+esc(ig)+'" rel="noopener">@'+esc(ig)+"</a></p>":"")+
+    (isFinite(actualizado)?'<p class="aviso">Menú actualizado: '+esc(actualizado.toLocaleString("es-HN",{day:"numeric",month:"short",hour:"numeric",minute:"2-digit"}))+"</p>":"");
 
   spy();
   whatsapp();
@@ -529,8 +532,14 @@ function deslizable(cont,sel,idDe,saleEntero){
     if(!el)return;
     var mx=e.touches[0].clientX-x0,my=e.touches[0].clientY-y0;
     if(!moviendo){
-      if(Math.abs(my)>=8&&Math.abs(my)>=Math.abs(mx)){el=null;return} // se está desplazando hacia arriba o abajo
-      if(mx<8||mx<Math.abs(my)*1.2)return;
+      var ax=Math.abs(mx),ay=Math.abs(my);
+      if(ax<6&&ay<6)return; // un toque siempre tiembla un poco
+      if(ay>=ax||mx<0){el=null;return} // hacia arriba/abajo o a la izquierda: no es este gesto
+      if(ax<ay*1.5)return; // en diagonal: todavía no se sabe
+      // Hacia la derecha: se reclama el gesto ya. En iPhone, si la página no lo reclama en los primeros
+      // milímetros, Safari empieza a desplazar la página y cancela el gesto.
+      if(e.cancelable)e.preventDefault();
+      if(mx<8)return;
       moviendo=true;el.classList.add("arrastra");
     }
     if(e.cancelable)e.preventDefault(); // que el navegador no lo tome como desplazamiento ni como "atrás"
