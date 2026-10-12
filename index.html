@@ -177,9 +177,13 @@ body.con-wa footer{padding-bottom:calc(110px + var(--abajo))}
 .item,.lista li{position:relative;overflow:hidden;touch-action:pan-y pinch-zoom}
 .item>*,.lista li>*{transform:translateX(var(--dx,0px));transition:transform .2s ease}
 .arrastra>*{transition:none}
-.arrastra,.sale{background:#f9e3e0}
-.arrastra::before,.sale::before{content:"🗑 Quitar";position:absolute;left:12px;top:50%;transform:translateY(-50%);color:#b42318;font:600 14px var(--ui);opacity:.5}
+.arrastra,.sale{background:linear-gradient(90deg,#f9e3e0 var(--dx,0px),transparent var(--dx,0px))}
+.arrastra::before,.sale::before{content:"🗑 Quitar";position:absolute;left:0;top:0;bottom:0;display:flex;align-items:center;width:var(--dx,0px);padding-left:12px;
+  overflow:hidden;white-space:nowrap;box-sizing:border-box;color:#b42318;font:600 14px var(--ui);opacity:.5}
 .borra::before,.sale::before{opacity:1}
+.borra .mas{background:#b42318;border-color:#b42318;color:#fff}
+.mas svg{transition:transform .15s ease}
+.borra .mas svg{transform:rotate(45deg)}
 @media (prefers-reduced-motion:reduce){.wa-btn,.wa-btn::before,.wa-btn::after,.wa-globo,.cart-bar.bump,.toast,.mas.pop{animation:none}}
 </style>
 </head>
@@ -512,7 +516,8 @@ function quitar(id){
 }
 function deslizable(cont,sel,idDe,saleEntero){
   var el=null,id,x0,y0,dx=0,moviendo=false;
-  var limite=function(t){return Math.min(110,t.offsetWidth*.3)};
+  // Hay que deslizar ~1/3 del plato; si se empieza cerca del borde derecho (sobre el +), basta con lo que queda hasta el borde
+  var limite=function(t){return Math.min(110,t.offsetWidth*.3,Math.max(24,(innerWidth-x0)*.6))};
   cont.addEventListener("touchstart",function(e){
     el=null;
     if(e.touches.length!==1)return;
