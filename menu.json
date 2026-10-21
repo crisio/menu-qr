@@ -155,6 +155,13 @@
           "descripcion": "",
           "precio": 80,
           "media": []
+        },
+        {
+          "id": "plato-mvilxe27e3l",
+          "nombre": "Pinol",
+          "descripcion": "",
+          "precio": 60,
+          "media": []
         }
       ]
     },
