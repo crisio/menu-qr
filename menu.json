@@ -302,28 +302,28 @@
           "id": "smoothie-de-fresa",
           "nombre": "Smoothie de fresa",
           "descripcion": "",
-          "precio": 80,
+          "precio": 95,
           "media": []
         },
         {
           "id": "smoothie-de-maracuya",
           "nombre": "Smoothie de maracuyá",
           "descripcion": "",
-          "precio": 80,
+          "precio": 90,
           "media": []
         },
         {
           "id": "smoothie-de-banano",
           "nombre": "Smoothie de banano",
           "descripcion": "",
-          "precio": 70,
+          "precio": 80,
           "media": []
         },
         {
           "id": "smoothie-de-blueberry",
           "nombre": "Smoothie de blueberry",
           "descripcion": "",
-          "precio": 90,
+          "precio": 95,
           "media": []
         }
       ]
@@ -356,7 +356,7 @@
           "id": "limonada-fresa",
           "nombre": "Limonada fresa",
           "descripcion": "",
-          "precio": 70,
+          "precio": 85,
           "media": []
         }
       ]
