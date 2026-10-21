@@ -162,6 +162,13 @@
           "descripcion": "",
           "precio": 60,
           "media": []
+        },
+        {
+          "id": "plato-mvim0e7h77x",
+          "nombre": "Capuchino",
+          "descripcion": "",
+          "precio": 80,
+          "media": []
         }
       ]
     },
